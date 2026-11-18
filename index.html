@@ -11,7 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="script.js"></script>
+  <script>
+    if (!window.supabase) {
+      document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');
+    }
+  </script>
+  <script defer src="script.js?v=2.2"></script>
 </head>
 <body>
   <header class="site-header">
@@ -75,21 +80,26 @@
   <dialog id="authDialog" class="auth-dialog">
     <button class="dialog-close" id="closeDialog" aria-label="Tutup">×</button>
     <div id="loginView">
-      <div class="section-kicker">SELAMAT DATANG KEMBALI</div><h2>Login peserta</h2><p class="muted">Gunakan nomor WhatsApp terverifikasi dan password.</p>
-      <form id="loginForm"><label>Nomor WhatsApp<input name="phone" type="tel" placeholder="+6281234567890" required autocomplete="tel"></label><label>Password<input name="password" type="password" required autocomplete="current-password"></label><button class="btn btn-primary full" type="submit">Login</button></form>
+      <div class="section-kicker">SELAMAT DATANG KEMBALI</div><h2>Login peserta</h2><p class="muted">Gunakan Email atau nomor WhatsApp terdaftar dan password Anda.</p>
+      <form id="loginForm">
+        <label>Email atau Nomor WhatsApp<input name="identifier" type="text" placeholder="nama@email.com atau 08123456789" required autocomplete="username"></label>
+        <label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Masukkan password"></label>
+        <button class="btn btn-primary full" type="submit">Login</button>
+      </form>
       <p class="switch-auth">Belum memiliki akun? <button type="button" data-switch="register">Daftar</button></p>
     </div>
     <div id="registerView" hidden>
-      <div class="section-kicker">MULAI PERSIAPAN</div><h2>Daftar peserta</h2><p class="muted">Buat akun dengan nomor HP. Verifikasi nomor mengikuti pengaturan Supabase.</p>
+      <div class="section-kicker">MULAI PERSIAPAN</div><h2>Daftar peserta</h2><p class="muted">Lengkapi data diri dan buat password akun bimbingan belajar Anda.</p>
       <form id="registerForm">
-        <label>Nama lengkap<input name="full_name" required autocomplete="name"></label>
-        <label>Nomor WhatsApp<input name="phone" type="tel" placeholder="+6281234567890" required autocomplete="tel"></label>
-        <label>Email (opsional)<input name="email" type="email" autocomplete="email"></label>
-        <label>Tempat lahir<input name="birth_place"></label>
+        <label>Nama lengkap<input name="full_name" required autocomplete="name" placeholder="Nama lengkap sesuai KTP/Ijazah"></label>
+        <label>Nomor WhatsApp<input name="phone" type="tel" placeholder="08123456789 atau +6281234567890" required autocomplete="tel"></label>
+        <label>Email (opsional, disarankan)<input name="email" type="email" autocomplete="email" placeholder="contoh@gmail.com"></label>
+        <label>Buat Password<input name="password" type="password" minlength="8" required autocomplete="new-password" placeholder="Minimal 8 karakter"></label>
+        <label>Tempat lahir<input name="birth_place" placeholder="Kota/Kabupaten lahir"></label>
         <label>Tanggal lahir<input name="birth_date" type="date"></label>
-        <label>Domisili<textarea name="domicile" rows="2"></textarea></label>
+        <label>Domisili<textarea name="domicile" rows="2" placeholder="Alamat atau domisili saat ini"></textarea></label>
         <label>Pendidikan terakhir<select name="education_level"><option value="">Pilih pendidikan</option><option>SMA/SMK</option><option>Diploma</option><option>S1</option><option>S2</option><option>S3</option></select></label>
-        <label>Jurusan<input name="major"></label>
+        <label>Jurusan<input name="major" placeholder="Jurusan / Program Studi"></label>
         <label>Target formasi<select name="target_formation"><option value="">Pilih target</option><option>Penghulu — Kementerian Agama</option><option>Formasi lainnya</option><option>Belum memiliki target</option></select></label>
         <label class="consent"><input name="privacy_consent" type="checkbox" required> Saya menyetujui pemrosesan data pribadi sesuai kebijakan privasi CSCP.</label>
         <button class="btn btn-primary full" type="submit">Buat akun</button>
