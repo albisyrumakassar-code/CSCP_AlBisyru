@@ -1,8 +1,30 @@
 /* CSCP frontend. Isi konfigurasi Supabase setelah membuat proyek. Jangan pernah memasukkan service_role key di browser. */
-const SUPABASE_URL = ""; // contoh: https://xxxx.supabase.co
-const SUPABASE_ANON_KEY = ""; // publishable/anon key saja
-const supabaseReady = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase);
-const db = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const SUPABASE_URL = "https://qiphmdconfqukguhkicz.supabase.co"; // contoh: https://xxxx.supabase.co
+const SUPABASE_ANON_KEY = "sb_publishable_dMVjE0iV80805TY-JlbH_Q_A_R5oLLs"; // publishable/anon key saja
+
+function getDb() {
+  if (window._supabaseClient) return window._supabaseClient;
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null;
+  const lib = window.supabase;
+  if (lib && typeof lib.createClient === "function") {
+    try {
+      window._supabaseClient = lib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      return window._supabaseClient;
+    } catch (e) {
+      console.error("Gagal inisialisasi Supabase client:", e);
+    }
+  }
+  return null;
+}
+
+const db = new Proxy({}, {
+  get(_target, prop) {
+    const client = getDb();
+    if (!client) return undefined;
+    const value = client[prop];
+    return typeof value === "function" ? value.bind(client) : value;
+  }
+});
 
 const $ = (selector) => document.querySelector(selector);
 const dialog = $("#authDialog");
@@ -34,12 +56,30 @@ function normalizePhone(value) {
   return phone;
 }
 function requireSupabase() {
-  if (!db) throw new Error("Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di script.js terlebih dahulu.");
+  const client = getDb();
+  if (!client) {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      throw new Error("Supabase belum dikonfigurasi. Isi SUPABASE_URL dan SUPABASE_ANON_KEY di script.js terlebih dahulu.");
+    }
+    if (!window.supabase) {
+      throw new Error("Library Supabase belum selesai dimuat. Pastikan koneksi internet aktif, lalu refresh halaman (Ctrl + F5).");
+    }
+    throw new Error("Gagal menghubungkan ke Supabase. Periksa konsol browser untuk detail.");
+  }
+  return client;
 }
 function friendlyError(error) {
   const msg = error?.message || "Terjadi kesalahan. Silakan coba kembali.";
-  if (/invalid login credentials/i.test(msg)) return "Nomor WhatsApp atau password tidak sesuai.";
-  if (/already registered/i.test(msg)) return "Nomor tersebut sudah terdaftar. Silakan login.";
+  if (window.location.protocol === "file:" && (/failed to fetch/i.test(msg) || /network/i.test(msg) || /fetch/i.test(msg))) {
+    return "Browser memblokir koneksi database karena dibuka via file://. Klik ganda file 'jalankan_server.bat' di folder proyek untuk membukanya secara benar.";
+  }
+  if (/invalid login credentials/i.test(msg)) return "Email/Nomor WhatsApp atau password tidak sesuai.";
+  if (/already registered/i.test(msg) || /user already exists/i.test(msg)) return "Email atau nomor WhatsApp tersebut sudah terdaftar. Silakan login.";
+  if (/Email not confirmed/i.test(msg)) return "Email belum dikonfirmasi. Pastikan opsi 'Confirm email' dimatikan di pengaturan Supabase agar langsung aktif.";
+  if (/security purposes.*after (\d+) seconds/i.test(msg)) {
+    const detik = msg.match(/after (\d+) seconds/i)?.[1] || "60";
+    return `Demi keamanan, harap tunggu ${detik} detik sebelum mencoba lagi.`;
+  }
   return msg;
 }
 
@@ -49,12 +89,23 @@ $("#registerForm").addEventListener("submit", async (event) => {
     requireSupabase();
     const form = new FormData(event.currentTarget);
     const phone = normalizePhone(String(form.get("phone") || ""));
-    if (!/^\+[1-9]\d{7,14}$/.test(phone)) throw new Error("Format nomor WhatsApp tidak valid. Gunakan format internasional, misalnya +6281234567890.");
-    const email = String(form.get("email") || "").trim() || undefined;
-    const password = prompt("Buat password akun CSCP (minimal 8 karakter):");
-    if (!password || password.length < 8) throw new Error("Password minimal 8 karakter.");
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+      throw new Error("Format nomor WhatsApp tidak valid. Gunakan format seperti 08123456789 atau +6281234567890.");
+    }
+    
+    const inputEmail = String(form.get("email") || "").trim().toLowerCase();
+    const cleanDigits = phone.replace(/[^\d]/g, "");
+    // Jika email diisi gunakan email tersebut; jika tidak, gunakan format virtual berbasis nomor HP
+    const authEmail = inputEmail || `wa_${cleanDigits}@peserta.cscp.id`;
+    
+    const password = String(form.get("password") || "");
+    if (!password || password.length < 8) {
+      throw new Error("Password minimal 8 karakter.");
+    }
+
     const metadata = {
       full_name: String(form.get("full_name")).trim(),
+      phone: phone,
       birth_place: String(form.get("birth_place") || "").trim(),
       birth_date: form.get("birth_date") || null,
       domicile: String(form.get("domicile") || "").trim(),
@@ -63,17 +114,30 @@ $("#registerForm").addEventListener("submit", async (event) => {
       target_formation: String(form.get("target_formation") || ""),
       privacy_consent: true
     };
-    const { data, error } = await db.auth.signUp({ phone, password, options: { data: metadata } });
+
+    const { data, error } = await db.auth.signUp({
+      email: authEmail,
+      password: password,
+      options: { data: metadata }
+    });
     if (error) throw error;
+
     if (data.user) {
       const { error: profileError } = await db.from("profiles").upsert({
-        id: data.user.id, ...metadata, phone, email: email || null
+        id: data.user.id,
+        ...metadata,
+        email: inputEmail || null
       });
-      if (profileError) throw profileError;
+      if (profileError) console.warn("Penyimpanan profil tambahan:", profileError);
     }
+
     event.currentTarget.reset();
-    showMessage("Pendaftaran dikirim. Selesaikan verifikasi nomor melalui OTP sesuai pengaturan Supabase sebelum login.");
-  } catch (error) { showMessage(friendlyError(error)); }
+    toast("Pendaftaran berhasil! Silakan login.");
+    showMessage("Pendaftaran berhasil! Silakan login menggunakan Email atau Nomor WhatsApp Anda.");
+    window.setTimeout(() => openAuth("login"), 1800);
+  } catch (error) {
+    showMessage(friendlyError(error));
+  }
 });
 
 $("#loginForm").addEventListener("submit", async (event) => {
@@ -81,36 +145,96 @@ $("#loginForm").addEventListener("submit", async (event) => {
   try {
     requireSupabase();
     const form = new FormData(event.currentTarget);
-    const phone = normalizePhone(String(form.get("phone") || ""));
+    const identifier = String(form.get("identifier") || "").trim();
     const password = String(form.get("password") || "");
-    const { data, error } = await db.auth.signInWithPassword({ phone, password });
+
+    if (!identifier) throw new Error("Masukkan email atau nomor WhatsApp.");
+    if (!password) throw new Error("Masukkan password.");
+
+    let loginEmail = identifier.toLowerCase();
+
+    // Jika pengguna memasukkan nomor HP (bukan format email yang ada tanda @)
+    if (!loginEmail.includes("@")) {
+      const phone = normalizePhone(identifier);
+      let foundEmail = null;
+
+      // 1. Coba cari email asli via RPC get_email_by_phone
+      try {
+        const { data: rpcEmail, error: rpcErr } = await db.rpc("get_email_by_phone", { phone_input: phone });
+        if (!rpcErr && rpcEmail) {
+          foundEmail = rpcEmail;
+        }
+      } catch (_) {}
+
+      // 2. Jika RPC tidak menemukan atau belum dibuat, gunakan fallback format akun virtual
+      if (!foundEmail) {
+        const cleanDigits = phone.replace(/[^\d]/g, "");
+        foundEmail = `wa_${cleanDigits}@peserta.cscp.id`;
+      }
+
+      loginEmail = foundEmail;
+    }
+
+    const { data, error } = await db.auth.signInWithPassword({
+      email: loginEmail,
+      password: password
+    });
     if (error) throw error;
-    dialog.close(); await renderSession(data.session); toast("Login berhasil.");
-  } catch (error) { showMessage(friendlyError(error)); }
+
+    dialog.close();
+    await renderSession(data.session);
+    toast("Login berhasil.");
+  } catch (error) {
+    showMessage(friendlyError(error));
+  }
 });
 
 async function renderSession(session) {
-  if (!session || !db) { $("#accountArea").hidden = true; return; }
-  const { data: profile } = await db.from("profiles").select("full_name,phone,target_formation").eq("id", session.user.id).maybeSingle();
-  $("#profileName").textContent = profile?.full_name || session.user.user_metadata?.full_name || "Peserta CSCP";
-  $("#profilePhone").textContent = profile?.phone || session.user.phone || "";
-  $("#avatar").textContent = ($("#profileName").textContent.trim()[0] || "C").toUpperCase();
+  const client = getDb();
+  if (!session || !client) { $("#accountArea").hidden = true; return; }
+  let profile = null;
+  try {
+    const { data } = await client.from("profiles").select("full_name,phone,email,target_formation").eq("id", session.user.id).maybeSingle();
+    profile = data;
+  } catch (_) {}
+  
+  const displayName = profile?.full_name || session.user.user_metadata?.full_name || "Peserta CSCP";
+  const displayContact = profile?.phone || session.user.user_metadata?.phone || profile?.email || session.user.email || "";
+  $("#profileName").textContent = displayName;
+  $("#profilePhone").textContent = displayContact;
+  $("#avatar").textContent = (displayName.trim()[0] || "C").toUpperCase();
   $("#accountArea").hidden = false;
 }
 $("#logoutBtn").addEventListener("click", async () => {
-  if (!db) return;
-  const { error } = await db.auth.signOut();
+  const client = getDb();
+  if (!client) return;
+  const { error } = await client.auth.signOut();
   if (error) toast(friendlyError(error)); else { $("#accountArea").hidden = true; toast("Anda telah keluar."); }
 });
 
 async function init() {
-  if (!db) {
-    showMessage("Mode pratinjau: autentikasi belum aktif. Hubungkan Supabase untuk mengaktifkan pendaftaran dan login.");
+  let client = getDb();
+  if (!client && SUPABASE_URL && SUPABASE_ANON_KEY) {
+    for (let i = 0; i < 15; i++) {
+      await new Promise(r => setTimeout(r, 200));
+      client = getDb();
+      if (client) break;
+    }
+  }
+
+  if (!client) {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      showMessage("Mode pratinjau: autentikasi belum aktif. Hubungkan Supabase untuk mengaktifkan pendaftaran dan login.");
+    }
     return;
   }
-  const { data: { session } } = await db.auth.getSession();
-  await renderSession(session);
-  db.auth.onAuthStateChange((_event, session) => { renderSession(session); });
+  try {
+    const { data: { session } } = await client.auth.getSession();
+    await renderSession(session);
+    client.auth.onAuthStateChange((_event, session) => { renderSession(session); });
+  } catch (err) {
+    console.error("Init session error:", err);
+  }
 }
 init();
 
