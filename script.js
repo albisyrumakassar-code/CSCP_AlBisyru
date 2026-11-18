@@ -73,6 +73,9 @@ function friendlyError(error) {
   if (window.location.protocol === "file:" && (/failed to fetch/i.test(msg) || /network/i.test(msg) || /fetch/i.test(msg))) {
     return "Browser memblokir koneksi database karena dibuka via file://. Klik ganda file 'jalankan_server.bat' di folder proyek untuk membukanya secara benar.";
   }
+  if (/email rate limit/i.test(msg)) {
+    return "Batas pengiriman email Supabase tercapai. Buka dashboard Supabase > Authentication > Providers > Email, lalu MATIKAN (uncheck) opsi 'Confirm email' dan klik Save agar pendaftaran langsung aktif tanpa kirim email.";
+  }
   if (/invalid login credentials/i.test(msg)) return "Email/Nomor WhatsApp atau password tidak sesuai.";
   if (/already registered/i.test(msg) || /user already exists/i.test(msg)) return "Email atau nomor WhatsApp tersebut sudah terdaftar. Silakan login.";
   if (/Email not confirmed/i.test(msg)) return "Email belum dikonfirmasi. Pastikan opsi 'Confirm email' dimatikan di pengaturan Supabase agar langsung aktif.";
@@ -82,6 +85,31 @@ function friendlyError(error) {
   }
   return msg;
 }
+
+// Opsi lihat / sembunyikan password
+document.querySelectorAll(".toggle-password").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const wrap = btn.closest(".password-wrap");
+    if (!wrap) return;
+    const input = wrap.querySelector("input");
+    const eyeIcon = btn.querySelector(".eye-icon");
+    const eyeOffIcon = btn.querySelector(".eye-off-icon");
+    
+    if (input.type === "password") {
+      input.type = "text";
+      if (eyeIcon) eyeIcon.style.display = "none";
+      if (eyeOffIcon) eyeOffIcon.style.display = "block";
+      btn.setAttribute("aria-label", "Sembunyikan password");
+      btn.setAttribute("title", "Sembunyikan password");
+    } else {
+      input.type = "password";
+      if (eyeIcon) eyeIcon.style.display = "block";
+      if (eyeOffIcon) eyeOffIcon.style.display = "none";
+      btn.setAttribute("aria-label", "Lihat password");
+      btn.setAttribute("title", "Lihat password");
+    }
+  });
+});
 
 $("#registerForm").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -99,8 +127,13 @@ $("#registerForm").addEventListener("submit", async (event) => {
     const authEmail = inputEmail || `wa_${cleanDigits}@peserta.cscp.id`;
     
     const password = String(form.get("password") || "");
+    const confirmPassword = String(form.get("confirm_password") || "");
+
     if (!password || password.length < 8) {
       throw new Error("Password minimal 8 karakter.");
+    }
+    if (password !== confirmPassword) {
+      throw new Error("Konfirmasi password tidak cocok. Pastikan kedua kolom password diisi sama persis.");
     }
 
     const metadata = {
