@@ -225,5 +225,36 @@ with check (user_id = auth.uid() or public.has_staff_role());
 create policy "logs_staff_read" on public.admin_activity_logs for select to authenticated using (public.has_staff_role());
 create policy "logs_staff_insert" on public.admin_activity_logs for insert to authenticated with check (public.has_staff_role());
 
+-- Helper untuk login fleksibel (bisa menggunakan nomor WhatsApp/Telepon atau Email)
+create or replace function public.get_email_by_phone(phone_input text)
+returns text
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare
+  found_email text;
+begin
+  -- 1. Cari dari email profil jika terisi
+  select email into found_email
+  from public.profiles
+  where phone = phone_input and email is not null and email != ''
+  limit 1;
+  
+  -- 2. Jika di profiles kosong, cari email autentikasi dari auth.users
+  if found_email is null then
+    select u.email into found_email
+    from auth.users u
+    join public.profiles p on p.id = u.id
+    where p.phone = phone_input
+    limit 1;
+  end if;
+
+  return found_email;
+end;
+$$;
+
+grant execute on function public.get_email_by_phone(text) to anon, authenticated;
+
 -- NOTE: Add indexes, audit triggers, and stricter column-level controls after reviewing production needs.
 -- Never expose Supabase service_role key in browser code.
