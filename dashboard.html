@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dashboard Peserta CSCP — Platform Persiapan Seleksi CASN Terpadu Yayasan Pendidikan Al Bisyru.">
+  <meta name="theme-color" content="#0F469C">
+  <title>Dashboard Peserta — CSCP Al Bisyru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard/dashboard.css?v=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (!window.supabase) {
+      document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');
+    }
+  </script>
+</head>
+<body>
+  <!-- Loading Screen saat memverifikasi autentikasi -->
+  <div class="dash-loading-screen" id="dashLoadingScreen">
+    <div class="dash-spinner"></div>
+    <p style="font-size: 13px; font-weight: 600; color: #0F469C;">Memuat Dashboard Peserta CSCP...</p>
+  </div>
+
+  <!-- Header Container Dinamis -->
+  <div id="headerContainer"></div>
+
+  <!-- Main Content Container Dinamis (Rute Berpindah Tanpa Reload) -->
+  <main class="dash-main" id="mainContent" role="main"></main>
+
+  <!-- Footer Dashboard -->
+  <footer class="dash-footer">
+    <p>© <span id="dashYear"></span> Yayasan Pendidikan Al Bisyru · CSCP (Civil Servant Candidate Preparation)</p>
+  </footer>
+
+  <script>
+    document.getElementById("dashYear").textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="dashboard/dashboard.js?v=1.0"></script>
+</body>
+</html>
