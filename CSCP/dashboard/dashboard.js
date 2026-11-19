@@ -1,11 +1,14 @@
 /**
  * CSCP Dashboard Peserta - Main Controller & Router
- * Arsitektur Modular & Integrasi Supabase Authentication
+ * Arsitektur Modular Premium dengan Sidebar Navigation & Live State
  */
 
 import { checkAuth } from "./components/ProtectedRoute.js";
-import { renderDashboardHeader } from "./components/Header.js";
+import { renderSidebar } from "./components/Sidebar.js";
+import { renderTopBar } from "./components/TopBar.js";
 import { renderWelcomeSection } from "./components/WelcomeSection.js";
+import { renderStatsCards } from "./components/StatsCards.js";
+import { renderProgressOverview } from "./components/ProgressOverview.js";
 import { renderServiceGrid } from "./components/ServiceGrid.js";
 
 import { renderTryoutPage } from "./pages/tryout.js";
@@ -31,9 +34,16 @@ function getSupabase() {
   return null;
 }
 
-// Map rute ke fungsi render halaman
+// Router map
 const ROUTES = {
-  "overview": (data) => renderWelcomeSection(data) + renderServiceGrid(),
+  "overview": (data) => `
+    <div class="dash-overview-canvas">
+      ${renderWelcomeSection(data)}
+      ${renderStatsCards(data)}
+      ${renderProgressOverview(data)}
+      ${renderServiceGrid()}
+    </div>
+  `,
   "tryout": renderTryoutPage,
   "rekomendasi-belajar": renderRekomendasiPage,
   "persiapan-berkas": renderBerkasPage,
@@ -44,11 +54,9 @@ const ROUTES = {
 };
 
 function getActiveRoute() {
-  // 1. Cek parameter query atau hash
   const hash = window.location.hash.replace(/^#\/?/, "").trim();
   if (hash && ROUTES[hash]) return hash;
 
-  // 2. Cek path URL (misal /dashboard/tryout)
   const path = window.location.pathname.toLowerCase();
   for (const key of Object.keys(ROUTES)) {
     if (path.includes(`/dashboard/${key}`) || path.endsWith(`/${key}`)) {
@@ -57,60 +65,6 @@ function getActiveRoute() {
   }
 
   return "overview";
-}
-
-function renderApp(route = "overview") {
-  const headerContainer = document.getElementById("headerContainer");
-  const mainContent = document.getElementById("mainContent");
-
-  if (!currentUserData) return;
-
-  // 1. Render Header
-  if (headerContainer) {
-    headerContainer.innerHTML = renderDashboardHeader(currentUserData, route);
-    attachHeaderEvents();
-  }
-
-  // 2. Render Body Content
-  const renderFn = ROUTES[route] || ROUTES["overview"];
-  if (mainContent) {
-    mainContent.innerHTML = renderFn(currentUserData);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    attachCardEvents();
-  }
-}
-
-function attachHeaderEvents() {
-  const menuToggle = document.getElementById("dashMenuToggle");
-  const nav = document.getElementById("dashNav");
-  const logoutBtn = document.getElementById("dashLogoutBtn");
-
-  if (menuToggle && nav) {
-    menuToggle.onclick = () => {
-      const isOpen = nav.classList.toggle("open");
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-    };
-  }
-
-  if (logoutBtn) {
-    logoutBtn.onclick = handleLogout;
-  }
-}
-
-function attachCardEvents() {
-  document.querySelectorAll(".service-card-item").forEach((card) => {
-    card.onclick = () => {
-      const hash = card.getAttribute("data-hash") || "#overview";
-      window.location.hash = hash;
-    };
-    card.onkeydown = (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        const hash = card.getAttribute("data-hash") || "#overview";
-        window.location.hash = hash;
-      }
-    };
-  });
 }
 
 function redirectToLanding(params = "logout=1") {
@@ -131,10 +85,87 @@ async function handleLogout() {
   redirectToLanding("logout=1");
 }
 
+function renderApp(route = "overview") {
+  const sidebarContainer = document.getElementById("sidebarContainer");
+  const topbarContainer = document.getElementById("topbarContainer");
+  const mainContent = document.getElementById("mainContent");
+
+  if (!currentUserData) return;
+
+  // 1. Render Sidebar
+  if (sidebarContainer) {
+    sidebarContainer.innerHTML = renderSidebar(currentUserData, route);
+  }
+
+  // 2. Render TopBar
+  if (topbarContainer) {
+    topbarContainer.innerHTML = renderTopBar(currentUserData, route);
+  }
+
+  // 3. Render Canvas
+  const renderFn = ROUTES[route] || ROUTES["overview"];
+  if (mainContent) {
+    mainContent.innerHTML = renderFn(currentUserData);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // 4. Attach Events
+  attachEvents();
+}
+
+function attachEvents() {
+  // Mobile Sidebar Toggle
+  const sidebar = document.getElementById("dashSidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  const openBtn = document.getElementById("topbarMenuToggle");
+  const closeBtn = document.getElementById("sidebarCloseBtn");
+  const logoutBtn = document.getElementById("sidebarLogoutBtn");
+
+  const closeSidebar = () => {
+    if (sidebar) sidebar.classList.remove("open");
+    if (overlay) overlay.classList.remove("show");
+  };
+
+  const openSidebar = () => {
+    if (sidebar) sidebar.classList.add("open");
+    if (overlay) overlay.classList.add("show");
+  };
+
+  if (openBtn) openBtn.onclick = openSidebar;
+  if (closeBtn) closeBtn.onclick = closeSidebar;
+  if (overlay) overlay.onclick = closeSidebar;
+
+  // Logout
+  if (logoutBtn) logoutBtn.onclick = handleLogout;
+
+  // Service Cards Clicks
+  document.querySelectorAll(".service-card-item").forEach((card) => {
+    card.onclick = () => {
+      const hash = card.getAttribute("data-hash") || "#overview";
+      window.location.hash = hash;
+      closeSidebar();
+    };
+    card.onkeydown = (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const hash = card.getAttribute("data-hash") || "#overview";
+        window.location.hash = hash;
+        closeSidebar();
+      }
+    };
+  });
+
+  // Nav menu items click
+  document.querySelectorAll(".nav-menu-item").forEach((link) => {
+    link.onclick = () => {
+      closeSidebar();
+    };
+  });
+}
+
 async function initDashboard() {
   const loadingScreen = document.getElementById("dashLoadingScreen");
 
-  // Tunggu Supabase termuat dari CDN jika ada jeda
   let client = getSupabase();
   if (!client) {
     for (let i = 0; i < 15; i++) {
@@ -144,10 +175,9 @@ async function initDashboard() {
     }
   }
 
-  // Proteksi Route: Validasi session
+  // Proteksi Route
   const authResult = await checkAuth(client);
   if (!authResult) {
-    // checkAuth otomatis me-redirect ke index.html
     return;
   }
 
@@ -158,20 +188,20 @@ async function initDashboard() {
     loadingScreen.style.opacity = "0";
     setTimeout(() => {
       loadingScreen.style.display = "none";
-    }, 250);
+    }, 280);
   }
 
-  // Render halaman sesuai rute saat ini
+  // Render awal
   const initialRoute = getActiveRoute();
   renderApp(initialRoute);
 
-  // Dengarkan perubahan hash navigasi
+  // Router listener
   window.addEventListener("hashchange", () => {
     const currentRoute = getActiveRoute();
     renderApp(currentRoute);
   });
 
-  // Dengarkan auth state jika session habis di tab lain
+  // Realtime Auth State
   if (client) {
     client.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
@@ -181,7 +211,6 @@ async function initDashboard() {
   }
 }
 
-// Inisialisasi saat DOM siap
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initDashboard);
 } else {
