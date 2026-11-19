@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Dashboard Peserta CSCP — Platform Persiapan Seleksi CASN Terpadu Yayasan Pendidikan Al Bisyru.">
-  <meta name="theme-color" content="#0F469C">
+  <meta name="theme-color" content="#0B2545">
   <title>Dashboard Peserta — CSCP Al Bisyru</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css?v=1.0">
+  <link rel="stylesheet" href="dashboard.css?v=2.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     if (!window.supabase) {
@@ -17,22 +17,51 @@
     }
   </script>
 </head>
-<body>
+<body class="dash-body">
+  <!-- Loading Screen saat memverifikasi autentikasi -->
   <div class="dash-loading-screen" id="dashLoadingScreen">
     <div class="dash-spinner"></div>
-    <p style="font-size: 13px; font-weight: 600; color: #0F469C;">Memuat Dashboard Peserta CSCP...</p>
+    <div class="dash-loading-text">
+      <strong>CSCP Al Bisyru</strong>
+      <span>Memuat Dashboard Peserta...</span>
+    </div>
   </div>
 
-  <div id="headerContainer"></div>
-  <main class="dash-main" id="mainContent" role="main"></main>
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div class="dash-sidebar-overlay" id="sidebarOverlay"></div>
 
-  <footer class="dash-footer">
-    <p>© <span id="dashYear"></span> Yayasan Pendidikan Al Bisyru · CSCP (Civil Servant Candidate Preparation)</p>
-  </footer>
+  <!-- App Layout: Sidebar + Main Content Container -->
+  <div class="dash-app-layout">
+    <!-- Sidebar Navigasi Utama -->
+    <div id="sidebarContainer"></div>
+
+    <!-- Area Konten Utama -->
+    <div class="dash-app-container">
+      <!-- Topbar Header -->
+      <div id="topbarContainer"></div>
+
+      <!-- Main Canvas Router Dinamis -->
+      <main class="dash-canvas" id="mainContent" role="main"></main>
+
+      <!-- Footer Dashboard -->
+      <footer class="dash-footer">
+        <div class="dash-footer-inner">
+          <p>© <span id="dashYear"></span> <strong>Yayasan Pendidikan Al Bisyru</strong> · CSCP (Civil Servant Candidate Preparation)</p>
+          <div class="dash-footer-links">
+            <a href="https://wa.me/6282349468463" target="_blank" rel="noopener">Bantuan Admin</a>
+            <span>•</span>
+            <a href="https://chat.whatsapp.com/KPekbZvmyGULbg6OCYUHDq" target="_blank" rel="noopener">Komunitas Peserta</a>
+            <span>•</span>
+            <a href="../index.html">Landing Page</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
 
   <script>
     document.getElementById("dashYear").textContent = new Date().getFullYear();
   </script>
-  <script type="module" src="dashboard.js?v=1.0"></script>
+  <script type="module" src="dashboard.js?v=2.0"></script>
 </body>
 </html>
