@@ -1,6 +1,6 @@
-/* CSCP frontend. Isi konfigurasi Supabase setelah membuat proyek. Jangan pernah memasukkan service_role key di browser. */
-const SUPABASE_URL = "https://qiphmdconfqukguhkicz.supabase.co"; // contoh: https://xxxx.supabase.co
-const SUPABASE_ANON_KEY = "sb_publishable_dMVjE0iV80805TY-JlbH_Q_A_R5oLLs"; // publishable/anon key saja
+/* CSCP frontend (Landing Page). */
+const SUPABASE_URL = "https://qiphmdconfqukguhkicz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dMVjE0iV80805TY-JlbH_Q_A_R5oLLs";
 
 function getDb() {
   if (window._supabaseClient) return window._supabaseClient;
@@ -29,25 +29,58 @@ const db = new Proxy({}, {
 const $ = (selector) => document.querySelector(selector);
 const dialog = $("#authDialog");
 const toast = (message) => {
-  const el = $("#toast"); el.textContent = message; el.classList.add("show");
+  const el = $("#toast");
+  if (!el) return;
+  el.textContent = message;
+  el.classList.add("show");
   window.setTimeout(() => el.classList.remove("show"), 3200);
 };
-const showMessage = (message) => { $("#authMessage").textContent = message; };
+const showMessage = (message) => {
+  const el = $("#authMessage");
+  if (el) el.textContent = message;
+};
 const openAuth = (view) => {
   $("#loginView").hidden = view !== "login";
   $("#registerView").hidden = view !== "register";
   showMessage("");
   if (!dialog.open) dialog.showModal();
 };
+
 document.querySelectorAll("[data-open]").forEach(btn => btn.addEventListener("click", () => openAuth(btn.dataset.open)));
 document.querySelectorAll("[data-switch]").forEach(btn => btn.addEventListener("click", () => openAuth(btn.dataset.switch)));
 $("#closeDialog").addEventListener("click", () => dialog.close());
 $("#menuToggle").addEventListener("click", () => {
-  const nav = $("#mainNav"); const isOpen = nav.classList.toggle("open");
+  const nav = $("#mainNav");
+  const isOpen = nav.classList.toggle("open");
   $("#menuToggle").setAttribute("aria-expanded", String(isOpen));
 });
 $("#mainNav").querySelectorAll("a").forEach(a => a.addEventListener("click", () => $("#mainNav").classList.remove("open")));
 $("#year").textContent = new Date().getFullYear();
+
+// Opsi lihat / sembunyikan password
+document.querySelectorAll(".toggle-password").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const wrap = btn.closest(".password-wrap");
+    if (!wrap) return;
+    const input = wrap.querySelector("input");
+    const eyeIcon = btn.querySelector(".eye-icon");
+    const eyeOffIcon = btn.querySelector(".eye-off-icon");
+    
+    if (input.type === "password") {
+      input.type = "text";
+      if (eyeIcon) eyeIcon.style.display = "none";
+      if (eyeOffIcon) eyeOffIcon.style.display = "block";
+      btn.setAttribute("aria-label", "Sembunyikan password");
+      btn.setAttribute("title", "Sembunyikan password");
+    } else {
+      input.type = "password";
+      if (eyeIcon) eyeIcon.style.display = "block";
+      if (eyeOffIcon) eyeOffIcon.style.display = "none";
+      btn.setAttribute("aria-label", "Lihat password");
+      btn.setAttribute("title", "Lihat password");
+    }
+  });
+});
 
 function normalizePhone(value) {
   let phone = value.replace(/[^\d+]/g, "");
@@ -55,6 +88,7 @@ function normalizePhone(value) {
   if (phone.startsWith("62")) phone = "+" + phone;
   return phone;
 }
+
 function requireSupabase() {
   const client = getDb();
   if (!client) {
@@ -68,10 +102,14 @@ function requireSupabase() {
   }
   return client;
 }
+
 function friendlyError(error) {
   const msg = error?.message || "Terjadi kesalahan. Silakan coba kembali.";
   if (window.location.protocol === "file:" && (/failed to fetch/i.test(msg) || /network/i.test(msg) || /fetch/i.test(msg))) {
     return "Browser memblokir koneksi database karena dibuka via file://. Klik ganda file 'jalankan_server.bat' di folder proyek untuk membukanya secara benar.";
+  }
+  if (/email rate limit/i.test(msg)) {
+    return "Batas pengiriman email Supabase tercapai. Buka dashboard Supabase > Authentication > Providers > Email, lalu MATIKAN (uncheck) opsi 'Confirm email' dan klik Save agar pendaftaran langsung aktif tanpa kirim email.";
   }
   if (/invalid login credentials/i.test(msg)) return "Email/Nomor WhatsApp atau password tidak sesuai.";
   if (/already registered/i.test(msg) || /user already exists/i.test(msg)) return "Email atau nomor WhatsApp tersebut sudah terdaftar. Silakan login.";
@@ -83,6 +121,7 @@ function friendlyError(error) {
   return msg;
 }
 
+// Handler Registrasi Peserta
 $("#registerForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   try {
@@ -99,8 +138,13 @@ $("#registerForm").addEventListener("submit", async (event) => {
     const authEmail = inputEmail || `wa_${cleanDigits}@peserta.cscp.id`;
     
     const password = String(form.get("password") || "");
+    const confirmPassword = String(form.get("confirm_password") || "");
+
     if (!password || password.length < 8) {
       throw new Error("Password minimal 8 karakter.");
+    }
+    if (password !== confirmPassword) {
+      throw new Error("Konfirmasi password tidak cocok. Pastikan kedua kolom password diisi sama persis.");
     }
 
     const metadata = {
@@ -123,23 +167,37 @@ $("#registerForm").addEventListener("submit", async (event) => {
     if (error) throw error;
 
     if (data.user) {
-      const { error: profileError } = await db.from("profiles").upsert({
-        id: data.user.id,
-        ...metadata,
-        email: inputEmail || null
-      });
-      if (profileError) console.warn("Penyimpanan profil tambahan:", profileError);
+      try {
+        await db.from("profiles").upsert({
+          id: data.user.id,
+          ...metadata,
+          email: inputEmail || null
+        });
+      } catch (profileError) {
+        console.warn("Penyimpanan profil tambahan:", profileError);
+      }
     }
 
     event.currentTarget.reset();
-    toast("Pendaftaran berhasil! Silakan login.");
-    showMessage("Pendaftaran berhasil! Silakan login menggunakan Email atau Nomor WhatsApp Anda.");
-    window.setTimeout(() => openAuth("login"), 1800);
+
+    // Jika Supabase langsung memberikan session (confirm email mati):
+    if (data.session) {
+      toast("Pendaftaran berhasil! Mengarahkan ke Dashboard...");
+      showMessage("Pendaftaran berhasil! Mengarahkan ke Dashboard Peserta...");
+      window.setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1200);
+    } else {
+      toast("Pendaftaran berhasil! Silakan login.");
+      showMessage("Pendaftaran berhasil! Silakan login menggunakan Email atau Nomor WhatsApp Anda.");
+      window.setTimeout(() => openAuth("login"), 1800);
+    }
   } catch (error) {
     showMessage(friendlyError(error));
   }
 });
 
+// Handler Login Peserta
 $("#loginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   try {
@@ -158,7 +216,7 @@ $("#loginForm").addEventListener("submit", async (event) => {
       const phone = normalizePhone(identifier);
       let foundEmail = null;
 
-      // 1. Coba cari email asli via RPC get_email_by_phone
+      // 1. Coba cari email via RPC get_email_by_phone
       try {
         const { data: rpcEmail, error: rpcErr } = await db.rpc("get_email_by_phone", { phone_input: phone });
         if (!rpcErr && rpcEmail) {
@@ -182,34 +240,11 @@ $("#loginForm").addEventListener("submit", async (event) => {
     if (error) throw error;
 
     dialog.close();
-    await renderSession(data.session);
-    toast("Login berhasil.");
+    toast("Login berhasil! Mengarahkan ke Dashboard...");
+    window.location.href = "dashboard.html";
   } catch (error) {
     showMessage(friendlyError(error));
   }
-});
-
-async function renderSession(session) {
-  const client = getDb();
-  if (!session || !client) { $("#accountArea").hidden = true; return; }
-  let profile = null;
-  try {
-    const { data } = await client.from("profiles").select("full_name,phone,email,target_formation").eq("id", session.user.id).maybeSingle();
-    profile = data;
-  } catch (_) {}
-  
-  const displayName = profile?.full_name || session.user.user_metadata?.full_name || "Peserta CSCP";
-  const displayContact = profile?.phone || session.user.user_metadata?.phone || profile?.email || session.user.email || "";
-  $("#profileName").textContent = displayName;
-  $("#profilePhone").textContent = displayContact;
-  $("#avatar").textContent = (displayName.trim()[0] || "C").toUpperCase();
-  $("#accountArea").hidden = false;
-}
-$("#logoutBtn").addEventListener("click", async () => {
-  const client = getDb();
-  if (!client) return;
-  const { error } = await client.auth.signOut();
-  if (error) toast(friendlyError(error)); else { $("#accountArea").hidden = true; toast("Anda telah keluar."); }
 });
 
 async function init() {
@@ -222,28 +257,33 @@ async function init() {
     }
   }
 
-  if (!client) {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-      showMessage("Mode pratinjau: autentikasi belum aktif. Hubungkan Supabase untuk mengaktifkan pendaftaran dan login.");
-    }
-    return;
-  }
+  if (!client) return;
+
   try {
     const { data: { session } } = await client.auth.getSession();
-    await renderSession(session);
-    client.auth.onAuthStateChange((_event, session) => { renderSession(session); });
+    const urlParams = new URLSearchParams(window.location.search);
+    const isLogout = urlParams.has("logout");
+
+    if (session && !isLogout) {
+      // Tampilkan tombol Buka Dashboard di navbar jika pengunjung kembali ke landing page
+      const navLoginBtn = $("#navLoginBtn");
+      const navRegisterBtn = $("#navRegisterBtn");
+      const navDashboardBtn = $("#navDashboardBtn");
+      const heroRegisterBtn = $("#heroRegisterBtn");
+
+      if (navLoginBtn) navLoginBtn.style.display = "none";
+      if (navRegisterBtn) navRegisterBtn.style.display = "none";
+      if (navDashboardBtn) navDashboardBtn.style.display = "inline-flex";
+      if (heroRegisterBtn) {
+        heroRegisterBtn.textContent = "Buka Dashboard Peserta →";
+        heroRegisterBtn.removeAttribute("data-open");
+        heroRegisterBtn.addEventListener("click", () => {
+          window.location.href = "dashboard.html";
+        });
+      }
+    }
   } catch (err) {
-    console.error("Init session error:", err);
+    console.error("Init session check error:", err);
   }
 }
 init();
-
-// Soal demonstrasi statis untuk memeriksa tampilan. Bank soal produksi wajib diambil dari database.
-const sample = $("#sampleQuestion");
-if (sample) {
-  sample.innerHTML = `<p><b>Contoh TWK · Nomor 1</b></p><p>Nilai yang menjadi dasar persatuan dalam keberagaman masyarakat Indonesia adalah ...</p><label><input type="radio" name="demo" value="a"> A. Individualisme</label><br><label><input type="radio" name="demo" value="b"> B. Bhinneka Tunggal Ika</label><br><label><input type="radio" name="demo" value="c"> C. Persaingan bebas</label><br><button class="btn btn-outline" id="checkDemo">Periksa jawaban contoh</button><p id="demoFeedback" class="muted"></p>`;
-  $("#checkDemo").addEventListener("click", () => {
-    const answer = document.querySelector('input[name="demo"]:checked');
-    $("#demoFeedback").textContent = !answer ? "Pilih salah satu jawaban." : answer.value === "b" ? "Benar untuk contoh ini." : "Belum tepat. Jawaban contoh: Bhinneka Tunggal Ika.";
-  });
-}
