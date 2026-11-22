@@ -233,28 +233,45 @@ security definer
 set search_path = public, auth
 as $$
 declare
-  found_email text;
+  clean_input text;
+  result_emails text;
 begin
-  -- 1. Cari dari email profil jika terisi
-  select email into found_email
-  from public.profiles
-  where phone = phone_input and email is not null and email != ''
-  limit 1;
+  -- Bersihkan karakter non-angka
+  clean_input := regexp_replace(phone_input, '[^\d]', '', 'g');
   
-  -- 2. Jika di profiles kosong, cari email autentikasi dari auth.users
-  if found_email is null then
-    select u.email into found_email
-    from auth.users u
-    join public.profiles p on p.id = u.id
-    where p.phone = phone_input
-    limit 1;
+  -- Normalisasi awalan: hilangkan 62 atau 0 di depan untuk mendapatkan angka inti nomor
+  if clean_input like '62%' then
+    clean_input := substring(clean_input from 3);
+  elsif clean_input like '0%' then
+    clean_input := substring(clean_input from 2);
   end if;
 
-  return found_email;
+  -- 1. Cari email di auth.users (terurut dari yang terbaru)
+  select string_agg(distinct u.email, ',') into result_emails
+  from auth.users u
+  where (
+    regexp_replace(coalesce(u.raw_user_meta_data->>'phone', ''), '[^\d]', '', 'g') like '%' || clean_input
+    or regexp_replace(coalesce(u.phone, ''), '[^\d]', '', 'g') like '%' || clean_input
+    or coalesce(u.raw_user_meta_data->>'phone', '') = phone_input
+  );
+
+  -- 2. Jika belum ditemukan di auth.users, cari di tabel profiles
+  if result_emails is null or result_emails = '' then
+    select string_agg(distinct p.email, ',') into result_emails
+    from public.profiles p
+    where (
+      regexp_replace(coalesce(p.phone, ''), '[^\d]', '', 'g') like '%' || clean_input
+      or p.phone = phone_input
+    )
+    and p.email is not null and p.email != '';
+  end if;
+
+  return result_emails;
 end;
 $$;
 
 grant execute on function public.get_email_by_phone(text) to anon, authenticated;
+grant select on public.profiles to anon, authenticated;
 
 -- NOTE: Add indexes, audit triggers, and stricter column-level controls after reviewing production needs.
 -- Never expose Supabase service_role key in browser code.
