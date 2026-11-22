@@ -3,6 +3,11 @@
  * Route: /dashboard/kelas-zoom (#kelas-zoom)
  */
 
+const ZOOM_JOIN_URL = "https://us04web.zoom.us/j/2672944490?pwd=hKYEs7sFfZ4rz8Ev5KdvGOKtXnLBvi.1";
+const ZOOM_TOPIC = "Maulana's Personal Meeting Room";
+const ZOOM_MEETING_ID = "267 294 4490";
+const ZOOM_PASSCODE = "PP8S9w";
+
 export function renderZoomPage(userData) {
   return `
     <div class="feature-page-container">
@@ -31,34 +36,40 @@ export function renderZoomPage(userData) {
         </div>
 
         <div class="placeholder-notice-box">
-          <div class="notice-icon">🎥</div>
+          <div class="notice-icon">📅</div>
           <div class="notice-text">
-            <h3>Fitur Sedang Disiapkan</h3>
-            <p>Fitur ini sedang dalam tahap pengembangan. Kami sedang mempersiapkan pengalaman belajar terbaik untuk Anda.</p>
+            <h3>Jadwal Zoom: To Be Announced</h3>
+            <p>Jadwal sesi Zoom belum ditetapkan dan akan diumumkan kemudian. Link meeting, Meeting ID, serta passcode di bawah ini sudah aktif dan bisa langsung digunakan saat sesi dimulai.</p>
           </div>
         </div>
 
         <div class="preview-grid">
           <div class="preview-item">
-            <div class="preview-item-icon">📅</div>
-            <h4>Jadwal Tatap Muka Terstruktur</h4>
-            <p>Sesi rutin pembahasan soal intensif dan kupas tuntas materi bersama pengajar berpengalaman.</p>
+            <div class="preview-item-icon">🎥</div>
+            <h4>Topik Sesi</h4>
+            <p>${ZOOM_TOPIC}</p>
           </div>
           <div class="preview-item">
-            <div class="preview-item-icon">🎙️</div>
-            <h4>Tanya Jawab Langsung</h4>
-            <p>Diskusi interaktif dua arah untuk membahas soal-soal HOTS yang membingungkan.</p>
+            <div class="preview-item-icon">🆔</div>
+            <h4>Meeting ID</h4>
+            <p>${ZOOM_MEETING_ID}</p>
           </div>
           <div class="preview-item">
-            <div class="preview-item-icon">💾</div>
-            <h4>Akses Rekaman 24/7</h4>
-            <p>Rekaman video setiap kelas Zoom dapat diputar ulang kapan saja jika Anda berhalangan hadir.</p>
+            <div class="preview-item-icon">🔑</div>
+            <h4>Passcode</h4>
+            <p>${ZOOM_PASSCODE}</p>
           </div>
         </div>
 
         <div class="feature-actions">
+          <a href="${ZOOM_JOIN_URL}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">🎥 Gabung Zoom Meeting</a>
           <a href="#overview" class="btn btn-primary">← Kembali ke Dashboard</a>
         </div>
+
+        <p style="margin-top: 16px; font-size: 12.5px; color: var(--text-muted); word-break: break-all;">
+          Link meeting:
+          <a href="${ZOOM_JOIN_URL}" target="_blank" rel="noopener noreferrer">${ZOOM_JOIN_URL}</a>
+        </p>
       </div>
     </div>
   `;

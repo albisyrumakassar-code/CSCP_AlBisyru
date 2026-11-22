@@ -9,14 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2.4">
+  <link rel="stylesheet" href="style.css?v=2.3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     if (!window.supabase) {
       document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');
     }
   </script>
-  <script defer src="script.js?v=2.4"></script>
+  <script defer src="script.js?v=2.3"></script>
 </head>
 <body>
   <header class="site-header">
@@ -24,9 +24,8 @@
     <button class="menu-toggle" id="menuToggle" aria-label="Buka navigasi" aria-expanded="false">☰</button>
     <nav id="mainNav">
       <a href="#beranda">Beranda</a><a href="#tentang">Tentang</a><a href="#layanan">Layanan</a><a href="#kontak">Kontak</a>
-      <button class="btn btn-outline" data-open="login" id="navLoginBtn">Login</button>
-      <button class="btn btn-primary" data-open="register" id="navRegisterBtn">Daftar Sekarang</button>
-      <a href="dashboard.html" class="btn btn-primary" id="navDashboardBtn" style="display:none;">Buka Dashboard →</a>
+      <button class="btn btn-outline" data-open="login">Login</button>
+      <button class="btn btn-primary" data-open="register">Daftar Sekarang</button>
     </nav>
   </header>
 
@@ -36,10 +35,7 @@
         <span class="eyebrow">YAYASAN PENDIDIKAN AL BISYRU</span>
         <h1>Persiapkan Diri,<br><span>Raih Kesempatan</span><br>Mengabdi.</h1>
         <p>Persiapan CASN lebih terarah dengan latihan soal, try out, strategi belajar, dan pendampingan yang terstruktur.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" data-open="register" id="heroRegisterBtn">Mulai Persiapan <span>→</span></button>
-          <a class="btn btn-soft" href="#layanan">Pelajari Layanan</a>
-        </div>
+        <div class="hero-actions"><button class="btn btn-primary" data-open="register">Mulai Persiapan <span>→</span></button><a class="btn btn-soft" href="#layanan">Pelajari Layanan</a></div>
         <div class="trust-row"><span>✓ Belajar terstruktur</span><span>✓ Fleksibel lintas perangkat</span></div>
       </div>
       <div class="hero-visual" aria-label="Ilustrasi persiapan ujian">
@@ -68,6 +64,15 @@
     </section>
 
     <section class="cta section"><div><div class="section-kicker light">MULAI HARI INI</div><h2>Perjalanan Menuju ASN Dimulai dari Persiapan Hari Ini.</h2><p>Bangun kebiasaan belajar dan persiapkan diri dengan lebih percaya diri.</p></div><button class="btn btn-white" data-open="register">Daftar Akun Sekarang →</button></section>
+
+    <section class="section account-area" id="accountArea" hidden>
+      <div class="section-kicker">AREA PESERTA</div><h2>Dashboard persiapan</h2>
+      <div class="dashboard-grid">
+        <article class="panel profile-panel"><div class="avatar" id="avatar">C</div><h3 id="profileName">Peserta CSCP</h3><p id="profilePhone" class="muted"></p><button class="btn btn-outline" id="logoutBtn">Keluar</button></article>
+        <article class="panel"><h3>Ringkasan persiapan</h3><p class="muted">Data statistik akan tampil setelah riwayat try out terhubung.</p><div class="mini-stats"><div><strong id="tryoutCount">0</strong><small>Try out</small></div><div><strong>—</strong><small>Rata-rata nilai</small></div><div><strong>—</strong><small>Progres</small></div></div></article>
+      </div>
+      <article class="panel tryout-panel"><h3>Mini Try Out (contoh antarmuka)</h3><p class="muted">Contoh soal berikut hanya demonstrasi antarmuka, bukan soal resmi CASN.</p><div id="sampleQuestion"></div></article>
+    </section>
   </main>
 
   <footer id="kontak"><div class="footer-inner"><div><a class="brand brand-footer" href="#beranda"><span class="brand-mark">C</span><span>CSCP<small>AL BISYRU EDUCATION</small></span></a><p>Program persiapan seleksi CASN dari Yayasan Pendidikan Al Bisyru.</p></div><div><b>Terhubung dengan kami</b><a target="_blank" rel="noopener" href="https://www.instagram.com/albisyrumakassar/">Instagram Al Bisyru</a><a target="_blank" rel="noopener" href="https://chat.whatsapp.com/KPekbZvmyGULbg6OCYUHDq">Grup WhatsApp</a><a target="_blank" rel="noopener" href="https://wa.me/6282349468463">Hubungi admin</a></div></div><div class="copyright">© <span id="year"></span> Yayasan Pendidikan Al Bisyru · CSCP</div></footer>

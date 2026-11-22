@@ -37,7 +37,7 @@ export function renderSidebar(userData, activeRoute = "overview") {
         <span class="phase-indicator"></span>
         <div class="phase-text">
           <small>PERSIAPAN SELEKSI</small>
-          <strong>CASN 2024 / 2025</strong>
+          <strong>CASN 2026 / 2027</strong>
         </div>
       </div>
 
