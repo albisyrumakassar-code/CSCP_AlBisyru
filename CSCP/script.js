@@ -209,35 +209,60 @@ $("#loginForm").addEventListener("submit", async (event) => {
     if (!identifier) throw new Error("Masukkan email atau nomor WhatsApp.");
     if (!password) throw new Error("Masukkan password.");
 
-    let loginEmail = identifier.toLowerCase();
+    let candidateEmails = [];
+    const isPhoneInput = !identifier.includes("@");
+    let rpcFound = false;
 
     // Jika pengguna memasukkan nomor HP (bukan format email yang ada tanda @)
-    if (!loginEmail.includes("@")) {
+    if (isPhoneInput) {
       const phone = normalizePhone(identifier);
-      let foundEmail = null;
+      const cleanDigits = phone.replace(/[^\d]/g, "");
 
-      // 1. Coba cari email via RPC get_email_by_phone
+      // 1. Cari email akun via RPC get_email_by_phone di Supabase
       try {
         const { data: rpcEmail, error: rpcErr } = await db.rpc("get_email_by_phone", { phone_input: phone });
         if (!rpcErr && rpcEmail) {
-          foundEmail = rpcEmail;
+          rpcFound = true;
+          const foundList = String(rpcEmail).split(",").map(e => e.trim().toLowerCase()).filter(Boolean);
+          candidateEmails.push(...foundList);
         }
       } catch (_) {}
 
-      // 2. Jika RPC tidak menemukan atau belum dibuat, gunakan fallback format akun virtual
-      if (!foundEmail) {
-        const cleanDigits = phone.replace(/[^\d]/g, "");
-        foundEmail = `wa_${cleanDigits}@peserta.cscp.id`;
+      // 2. Tambahkan akun virtual berbasis nomor HP sebagai alternatif (untuk akun yang daftar tanpa email)
+      candidateEmails.push(`wa_${cleanDigits}@peserta.cscp.id`);
+      if (cleanDigits.startsWith("62")) {
+        candidateEmails.push(`wa_0${cleanDigits.slice(2)}@peserta.cscp.id`);
       }
-
-      loginEmail = foundEmail;
+    } else {
+      candidateEmails.push(identifier.toLowerCase());
     }
 
-    const { data, error } = await db.auth.signInWithPassword({
-      email: loginEmail,
-      password: password
-    });
-    if (error) throw error;
+    // Hilangkan duplikasi kandidat email
+    candidateEmails = [...new Set(candidateEmails)];
+
+    let authSuccess = false;
+    let lastError = null;
+
+    // Coba autentikasi dengan tiap kandidat email
+    for (const testEmail of candidateEmails) {
+      const { data, error } = await db.auth.signInWithPassword({
+        email: testEmail,
+        password: password
+      });
+      if (!error && data?.session) {
+        authSuccess = true;
+        break;
+      } else {
+        lastError = error;
+      }
+    }
+
+    if (!authSuccess) {
+      if (isPhoneInput && !rpcFound) {
+        throw new Error("Login dengan nomor WhatsApp belum terhubung ke database. Silakan login langsung menggunakan Email terdaftar Anda, atau hubungi admin.");
+      }
+      throw lastError || new Error("Email/Nomor WhatsApp atau password tidak sesuai.");
+    }
 
     dialog.close();
     toast("Login berhasil! Mengarahkan ke Dashboard...");
