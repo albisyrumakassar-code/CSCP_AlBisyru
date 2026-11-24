@@ -6,6 +6,7 @@
 
 const ZOOM_LINK = "https://us04web.zoom.us/j/2672944490?pwd=hKYEs7sFfZ4rz8Ev5KdvGOKtXnLBvi.1";
 const ZOOM_ID = "267 294 4490";
+const ZOOM_RECORDING_LINK = "https://drive.google.com/drive/folders/13oppOEXKLO5UhnQ8IstcMqizvOu8TqqX?usp=sharing";
 
 export function renderZoomPage(userData) {
   return `
@@ -93,6 +94,36 @@ export function renderZoomPage(userData) {
 
             <button type="button" class="btn-zoom-copy" id="btnCopyZoomLink" onclick="navigator.clipboard.writeText('${ZOOM_LINK}').then(() => { this.innerHTML = '✓ Link Zoom Tersalin!'; setTimeout(() => { this.innerHTML = '📋 Salin Tautan Zoom'; }, 2500); })">
               <span>📋 Salin Tautan Zoom</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel Akses Rekaman Zoom yang Telah Berlalu -->
+        <div class="zoom-recording-card">
+          <div class="zoom-card-top">
+            <span class="zoom-badge-recording">
+              <span class="zoom-dot-recording"></span>
+              Arsip Video: Rekaman Tersedia
+            </span>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Google Drive Resmi CSCP</span>
+          </div>
+
+          <h2 class="zoom-session-title">Rekaman Kelas Zoom yang Telah Berlalu</h2>
+          <p class="zoom-recording-desc">
+            Tertinggal sesi bimbingan atau ingin mengulas kembali pembahasan materi sebelumnya? Akses seluruh arsip video rekaman kelas Zoom yang telah berlangsung melalui folder Google Drive resmi di bawah ini.
+          </p>
+
+          <div class="zoom-actions-row">
+            <a href="${ZOOM_RECORDING_LINK}" target="_blank" rel="noopener noreferrer" class="btn-zoom-recording" id="btnOpenZoomRecording">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
+              <span>Buka Rekaman Kelas Zoom →</span>
+            </a>
+
+            <button type="button" class="btn-zoom-copy" id="btnCopyRecordingLink" onclick="navigator.clipboard.writeText('${ZOOM_RECORDING_LINK}').then(() => { this.innerHTML = '✓ Link Rekaman Tersalin!'; setTimeout(() => { this.innerHTML = '📋 Salin Tautan Rekaman'; }, 2500); })">
+              <span>📋 Salin Tautan Rekaman</span>
             </button>
           </div>
         </div>
