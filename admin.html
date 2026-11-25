@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portal Administrator CSCP — Yayasan Pendidikan Al Bisyru.">
+  <meta name="theme-color" content="#0B2545">
+  <title>Portal Administrator — CSCP Al Bisyru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard/dashboard.css?v=2.0">
+  <link rel="stylesheet" href="admin/admin.css?v=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    if (!window.supabase) {
+      document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');
+    }
+  </script>
+</head>
+<body class="dash-body">
+  <!-- Access Code Lock Screen -->
+  <section class="admin-gate-screen" id="adminGateScreen" aria-label="Gerbang Kode Akses Administrator">
+    <div class="admin-gate-card">
+      <div class="admin-gate-brand">
+        <div class="sidebar-logo-mark">C</div>
+        <div>
+          <span class="admin-gate-kicker">YAYASAN PENDIDIKAN AL BISYRU</span>
+          <h1>Portal Administrator CSCP</h1>
+        </div>
+      </div>
+
+      <p class="admin-gate-desc">
+        Masukkan kode akses administrator untuk memantau akun peserta terdaftar, perkembangan persiapan, bank soal, dan hasil Mini Try Out.
+      </p>
+
+      <form id="adminGateForm" class="admin-gate-form" autocomplete="off">
+        <label for="adminCodeInput" class="admin-gate-label">Kode Akses Administrator</label>
+        <div class="admin-code-wrap">
+          <input
+            type="password"
+            id="adminCodeInput"
+            name="access_code"
+            inputmode="numeric"
+            placeholder="Masukkan kode akses"
+            required
+            autofocus
+          >
+          <button type="button" class="admin-toggle-vis" id="toggleAdminCodeBtn" aria-label="Tampilkan kode akses" title="Tampilkan/Sembunyikan kode">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="admin-gate-error" id="adminGateError" role="alert" hidden></div>
+
+        <button type="submit" class="btn-admin-primary full">
+          <span>Buka Dashboard Administrator</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <div class="admin-gate-footer">
+        <a href="index.html" class="admin-back-link">← Kembali ke Halaman Utama</a>
+        <a href="dashboard.html" class="admin-back-link">Dashboard Peserta</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Admin App Shell (Hidden until unlocked) -->
+  <div id="adminAppShell" hidden>
+    <div class="dash-sidebar-overlay" id="adminSidebarOverlay"></div>
+
+    <div class="dash-app-layout">
+      <div id="adminSidebarContainer"></div>
+
+      <div class="dash-app-container">
+        <div id="adminTopbarContainer"></div>
+
+        <main class="dash-canvas" id="adminMainContent" role="main"></main>
+
+        <footer class="dash-footer">
+          <div class="dash-footer-inner">
+            <p>© <span id="adminYear"></span> <strong>Yayasan Pendidikan Al Bisyru</strong> · CSCP Administrator Portal</p>
+            <div class="dash-footer-links">
+              <a href="index.html">Landing Page</a>
+              <span>•</span>
+              <a href="dashboard.html">Dashboard Peserta</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Container for Detail Akun & Form Soal -->
+  <div class="admin-modal-backdrop" id="adminModalBackdrop" hidden>
+    <div class="admin-modal-dialog" id="adminModalDialog" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="admin-toast" id="adminToast" role="status" aria-live="polite"></div>
+
+  <script>
+    document.getElementById("adminYear").textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="admin/admin.js?v=1.0"></script>
+</body>
+</html>
