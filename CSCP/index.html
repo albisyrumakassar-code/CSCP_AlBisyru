@@ -9,14 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2.4">
+  <link rel="stylesheet" href="style.css?v=2.5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     if (!window.supabase) {
       document.write('<script src="https://unpkg.com/@supabase/supabase-js@2"><\/script>');
     }
   </script>
-  <script defer src="script.js?v=2.4"></script>
+  <script defer src="script.js?v=2.5"></script>
 </head>
 <body>
   <header class="site-header">
@@ -121,7 +121,15 @@
         <label>Domisili<textarea name="domicile" rows="2" placeholder="Alamat atau domisili saat ini"></textarea></label>
         <label>Pendidikan terakhir<select name="education_level"><option value="">Pilih pendidikan</option><option>SMA/SMK</option><option>Diploma</option><option>S1</option><option>S2</option><option>S3</option></select></label>
         <label>Jurusan<input name="major" placeholder="Jurusan / Program Studi"></label>
-        <label>Target formasi<select name="target_formation"><option value="">Pilih target</option><option>Penghulu — Kementerian Agama</option><option>Formasi lainnya</option><option>Belum memiliki target</option></select></label>
+        <label>Target formasi
+          <input name="target_formation" type="text" placeholder="Contoh: Penghulu pada kementerian agama">
+          <small class="field-hint">
+            Panduan pengisian:<br>
+            - Penghulu pada kementerian agama<br>
+            - Analisis hukum pada kementerian hukum dan ham<br>
+            - isi "belum memiliki" jika belum memiliki target formasi
+          </small>
+        </label>
         <label class="consent"><input name="privacy_consent" type="checkbox" required> Saya menyetujui pemrosesan data pribadi sesuai kebijakan privasi CSCP.</label>
         <button class="btn btn-primary full" type="submit">Buat akun</button>
       </form>
