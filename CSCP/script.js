@@ -155,7 +155,7 @@ $("#registerForm").addEventListener("submit", async (event) => {
       domicile: String(form.get("domicile") || "").trim(),
       education_level: String(form.get("education_level") || ""),
       major: String(form.get("major") || "").trim(),
-      target_formation: String(form.get("target_formation") || ""),
+      target_formation: String(form.get("target_formation") || "").trim(),
       privacy_consent: true
     };
 
