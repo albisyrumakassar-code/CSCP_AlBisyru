@@ -17,7 +17,7 @@ export function renderSidebar(userData, activeRoute = "overview") {
     <aside class="dash-sidebar" id="dashSidebar" aria-label="Navigasi Utama">
       <!-- Sidebar Brand Header -->
       <div class="sidebar-brand-wrap">
-        <a href="#overview" class="sidebar-brand" aria-label="CSCP Beranda Dashboard">
+        <a href="#overview" class="sidebar-brand" aria-label="Beranda Dashboard CSCP">
           <div class="sidebar-logo-mark">C</div>
           <div class="sidebar-brand-info">
             <span class="brand-title">CSCP</span>
@@ -118,7 +118,7 @@ export function renderSidebar(userData, activeRoute = "overview") {
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                 </svg>
               </span>
-              <span class="nav-item-text">Tips & Strategi</span>
+              <span class="nav-item-text">Tips dan Strategi</span>
             </a>
           </li>
           <li>
