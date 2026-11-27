@@ -43,7 +43,7 @@ export function renderRekomendasiPage(userData) {
           <div class="preview-item">
             <div class="preview-item-icon">🔍</div>
             <h4>Analisis Kelemahan</h4>
-            <p>Mendeteksi sub-topik yang membutuhkan perhatian ekstra berdasarkan histori latihan.</p>
+            <p>Mendeteksi subtopik yang membutuhkan perhatian ekstra berdasarkan histori latihan.</p>
           </div>
           <div class="preview-item">
             <div class="preview-item-icon">📈</div>
@@ -52,7 +52,7 @@ export function renderRekomendasiPage(userData) {
           </div>
           <div class="preview-item">
             <div class="preview-item-icon">💡</div>
-            <h4>Fasilitator Feedback</h4>
+            <h4>Umpan Balik Fasilitator</h4>
             <p>Saran personal dari pengajar Yayasan Pendidikan Al Bisyru untuk meningkatkan skor.</p>
           </div>
         </div>
