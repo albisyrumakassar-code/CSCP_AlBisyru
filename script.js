@@ -111,7 +111,7 @@ function friendlyError(error) {
   if (/email rate limit/i.test(msg)) {
     return "Batas pengiriman email Supabase tercapai. Buka dashboard Supabase > Authentication > Providers > Email, lalu MATIKAN (uncheck) opsi 'Confirm email' dan klik Save agar pendaftaran langsung aktif tanpa kirim email.";
   }
-  if (/invalid login credentials/i.test(msg)) return "Email/Nomor WhatsApp atau password tidak sesuai.";
+  if (/invalid login credentials/i.test(msg)) return "Email/nomor WhatsApp atau password tidak sesuai.";
   if (/already registered/i.test(msg) || /user already exists/i.test(msg)) return "Email atau nomor WhatsApp tersebut sudah terdaftar. Silakan login.";
   if (/Email not confirmed/i.test(msg)) return "Email belum dikonfirmasi. Pastikan opsi 'Confirm email' dimatikan di pengaturan Supabase agar langsung aktif.";
   if (/security purposes.*after (\d+) seconds/i.test(msg)) {
@@ -189,7 +189,7 @@ $("#registerForm").addEventListener("submit", async (event) => {
       }, 1200);
     } else {
       toast("Pendaftaran berhasil! Silakan login.");
-      showMessage("Pendaftaran berhasil! Silakan login menggunakan Email atau Nomor WhatsApp Anda.");
+      showMessage("Pendaftaran berhasil! Silakan login menggunakan email atau nomor WhatsApp Anda.");
       window.setTimeout(() => openAuth("login"), 1800);
     }
   } catch (error) {
@@ -259,9 +259,9 @@ $("#loginForm").addEventListener("submit", async (event) => {
 
     if (!authSuccess) {
       if (isPhoneInput && !rpcFound) {
-        throw new Error("Login dengan nomor WhatsApp belum terhubung ke database. Silakan login langsung menggunakan Email terdaftar Anda, atau hubungi admin.");
+        throw new Error("Login dengan nomor WhatsApp belum terhubung ke database. Silakan login langsung menggunakan email terdaftar Anda atau hubungi admin.");
       }
-      throw lastError || new Error("Email/Nomor WhatsApp atau password tidak sesuai.");
+      throw lastError || new Error("Email/nomor WhatsApp atau password tidak sesuai.");
     }
 
     dialog.close();
