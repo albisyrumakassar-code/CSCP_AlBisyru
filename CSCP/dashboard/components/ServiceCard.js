@@ -6,7 +6,7 @@
 export const SERVICE_CARDS_DATA = [
   {
     id: "tryout",
-    title: "MINI TRY OUT CASN",
+    title: "Mini Try Out CASN",
     description: "Latihan TWK, TIU, dan TKP untuk mengukur kesiapan dan kecepatan menjawab soal.",
     tag: "Simulasi CAT",
     tagType: "blue",
@@ -21,8 +21,8 @@ export const SERVICE_CARDS_DATA = [
   },
   {
     id: "rekomendasi-belajar",
-    title: "REKOMENDASI BELAJAR",
-    description: "Arah belajar berdasarkan kebutuhan dan hasil latihan untuk fokus pada sub-materi terlemah.",
+    title: "Rekomendasi Belajar",
+    description: "Arah belajar berdasarkan kebutuhan dan hasil latihan untuk fokus pada submateri terlemah.",
     tag: "Terarah & Personal",
     tagType: "purple",
     route: "/dashboard/rekomendasi-belajar",
@@ -36,7 +36,7 @@ export const SERVICE_CARDS_DATA = [
   },
   {
     id: "persiapan-berkas",
-    title: "PERSIAPAN BERKAS",
+    title: "Persiapan Berkas",
     description: "Checklist dokumen untuk membantu persiapan administrasi agar lolos verifikasi berkas instansi.",
     tag: "Administrasi",
     tagType: "green",
@@ -50,7 +50,7 @@ export const SERVICE_CARDS_DATA = [
   },
   {
     id: "tips-strategi",
-    title: "TIPS DAN STRATEGI",
+    title: "Tips dan Strategi",
     description: "Materi dan strategi belajar yang praktis, trik hitung cepat TIU, serta penalaran TWK dan TKP.",
     tag: "Taktik Ujian",
     tagType: "amber",
@@ -64,7 +64,7 @@ export const SERVICE_CARDS_DATA = [
   },
   {
     id: "kelas-zoom",
-    title: "KELAS ZOOM INTERAKTIF",
+    title: "Kelas Zoom Interaktif",
     description: "Informasi jadwal dan pendampingan kelas daring langsung bersama tutor ahli Al Bisyru.",
     tag: "Tatap Muka Daring",
     tagType: "blue",
@@ -78,7 +78,7 @@ export const SERVICE_CARDS_DATA = [
   },
   {
     id: "monitoring",
-    title: "MONITORING BELAJAR",
+    title: "Monitoring Belajar",
     description: "Pantau riwayat latihan, grafik perkembangan skor, dan kesiapan sebelum hari ujian sebenarnya.",
     tag: "Analitik Skor",
     tagType: "teal",
