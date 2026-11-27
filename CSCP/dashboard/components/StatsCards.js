@@ -44,10 +44,10 @@ export function renderStatsCards(userData) {
           <span class="stat-pill-trend bg-green-badge">Target 450+</span>
         </div>
         <div class="stat-card-body">
-          <span class="stat-label">Estimasi Rata-rata Skor</span>
+          <span class="stat-label">Estimasi Rata-Rata Skor</span>
           <div class="stat-value-row">
             <strong class="stat-number">—</strong>
-            <span class="stat-unit">/ 550 Max</span>
+            <span class="stat-unit">/ 550 Maks.</span>
           </div>
           <p class="stat-caption">Ambang batas passing grade: 311</p>
         </div>
