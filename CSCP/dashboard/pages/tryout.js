@@ -434,8 +434,8 @@ function renderExamView() {
             <!-- Header Kartu Soal -->
             <div class="cbt-q-header">
               <div class="cbt-q-title-wrap">
-                <span class="cbt-q-number-pill">Soal No. ${qNum}</span>
-                <span class="cbt-q-type-badge">${pkg.panel} · ${pkg.subcategoryTitle}</span>
+                <span class="cbt-q-number-pill">Soal No. ${qNum} dari ${totalQ}</span>
+                <span class="cbt-q-type-badge">${pkg.panel} · ${pkg.subcategoryTitle} · <strong>No. Asli #${currentQ.id}</strong></span>
               </div>
               <label class="cbt-flag-toggle ${isFlagged ? 'flagged' : ''}">
                 <input type="checkbox" ${isFlagged ? 'checked' : ''} onchange="window.cscpQuiz.toggleFlag(${currentQ.id})">
@@ -708,7 +708,7 @@ function renderResultView() {
               <article class="review-item-card ${cardStatusClass}" id="qReview_${q.id}">
                 <div class="review-card-head">
                   <div class="rev-num-title">
-                    <span class="rev-q-num">Soal No. ${q.id}</span>
+                    <span class="rev-q-num">Soal #${idx + 1} <small style="opacity: 0.85;">(Asli #${q.id})</small></span>
                     <span class="rev-q-key">Kunci: <strong>${q.correct}</strong></span>
                   </div>
                   ${statusPill}
