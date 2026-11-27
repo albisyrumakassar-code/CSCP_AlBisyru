@@ -47,7 +47,7 @@ export function renderTipsPage(userData) {
           <div class="preview-item">
             <div class="preview-item-icon">⚖️</div>
             <h4>Pola Soal Penalaran TWK</h4>
-            <p>Kunci memahami implementasi Pancasila, UUD 1945, dan Integritas dalam konteks kehidupan nyata.</p>
+            <p>Kunci memahami implementasi Pancasila, UUD 1945, dan integritas dalam konteks kehidupan nyata.</p>
           </div>
           <div class="preview-item">
             <div class="preview-item-icon">🌟</div>
