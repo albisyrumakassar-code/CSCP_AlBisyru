@@ -25,7 +25,7 @@ let state = {
   currentQuestionIdx: 0,
   answers: {}, // { questionId: "A" }
   flagged: {}, // { questionId: true/false }
-  timerSeconds: 45 * 60,
+  timerSeconds: 14 * 60,
   timerInterval: null,
   startTime: null,
   activeAttemptResult: null,
@@ -640,7 +640,7 @@ function renderResultView() {
           <div class="res-metric-item">
             <span class="res-m-label">Waktu Pengerjaan</span>
             <strong class="res-m-val">${durationMin}m ${durationSec}s</strong>
-            <span class="res-m-sub">dari 45 Menit</span>
+            <span class="res-m-sub">dari ${pkg ? pkg.durationMinutes : 14} Menit</span>
           </div>
           <div class="res-metric-item">
             <span class="res-m-label">Tingkat Akurasi</span>
@@ -786,7 +786,7 @@ function initQuizEngine() {
       state.currentQuestionIdx = 0;
       state.answers = {};
       state.flagged = {};
-      state.timerSeconds = pkg.durationSeconds || 45 * 60;
+      state.timerSeconds = pkg.durationSeconds || (pkg.durationMinutes ? pkg.durationMinutes * 60 : 14 * 60);
       state.startTime = Date.now();
       state.view = "exam";
 
