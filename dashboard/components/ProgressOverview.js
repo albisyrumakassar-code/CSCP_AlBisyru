@@ -1,9 +1,23 @@
 /**
  * ProgressOverview Component - CSCP Dashboard Peserta
  * Menampilkan Indikator Kesiapan Materi SKD & Checklist Tahapan Persiapan
+ * Terintegrasi Dinamis dengan Hasil Latihan Peserta
  */
 
+import { getOverallUserStats, getUserId, getUserHistory } from "../data/practiceBank.js";
+
 export function renderProgressOverview(userData) {
+  const userId = getUserId(userData);
+  const stats = getOverallUserStats(userId);
+  const tiuHistory = getUserHistory(userId, "tiu-baris-deret-1");
+  const latestTiu = tiuHistory[0] || null;
+  const highestTiuScore = tiuHistory.length ? Math.max(...tiuHistory.map(h => h.score || 0)) : null;
+
+  const tiuPercent = highestTiuScore ? Math.min(100, Math.round((highestTiuScore / 250) * 100)) : 45;
+  const tiuStatus = highestTiuScore !== null 
+    ? (highestTiuScore >= 80 ? `Lulus PG (${highestTiuScore} Poin)` : `Belum PG (${highestTiuScore} Poin)`)
+    : "Siap Evaluasi";
+
   return `
     <section class="progress-overview-section" aria-label="Ringkasan Kesiapan Belajar">
       <div class="overview-grid">
@@ -40,14 +54,14 @@ export function renderProgressOverview(userData) {
             <div class="readiness-bar-item">
               <div class="bar-header">
                 <span class="bar-name"><strong>TIU</strong> (Tes Inteligensi Umum)</span>
-                <span class="bar-score">Ambang Batas: <strong>80</strong> / 175</span>
+                <span class="bar-score">Ambang Batas: <strong>80</strong> / 250</span>
               </div>
               <div class="bar-track">
-                <div class="bar-fill tiu-fill" style="width: 45%;"></div>
+                <div class="bar-fill tiu-fill" style="width: ${tiuPercent}%;"></div>
               </div>
               <div class="bar-footer">
-                <small>35 Soal · Penalaran Verbal, Numerik, Deret, Figural</small>
-                <span class="bar-status-text">Siap Evaluasi</span>
+                <small>Kemampuan Numerik (Baris & Deret), Verbal, Figural</small>
+                <span class="bar-status-text ${highestTiuScore >= 80 ? 'text-green-bold' : ''}">${tiuStatus}</span>
               </div>
             </div>
 
@@ -61,7 +75,7 @@ export function renderProgressOverview(userData) {
                 <div class="bar-fill tkp-fill" style="width: 74%;"></div>
               </div>
               <div class="bar-footer">
-                <small>45 Soal · Pelayanan Publik, Jejaring Kerja, Sosial Budaya, Antiradikalisme</small>
+                <small>45 Soal · Pelayanan Publik, Jejaring Kerja, Sosial Budaya, TIK</small>
                 <span class="bar-status-text">Prioritas Skor</span>
               </div>
             </div>
@@ -73,54 +87,49 @@ export function renderProgressOverview(userData) {
           <div class="card-title-row">
             <div>
               <span class="card-kicker">CHECKLIST KESIAPAN</span>
-              <h2 class="card-heading">Tahapan Persiapan Berkas</h2>
+              <h2 class="card-heading">Tahapan Persiapan CASN</h2>
             </div>
-            <a href="#persiapan-berkas" class="card-link-action">Lihat Semua →</a>
+            <span class="badge-tag-skd bg-blue-subtle text-navy">Al Bisyru</span>
           </div>
           <p class="card-subtext">
-            Pastikan setiap dokumen administrasi disiapkan dengan ukuran dan format yang sesuai dengan ketentuan instansi.
+            Pantau runtutan langkah persiapan administrasi dan bimbingan belajar Anda.
           </p>
 
-          <ul class="milestone-steps-list">
+          <ol class="milestone-steps-list">
             <li class="milestone-step done">
               <div class="step-marker">✓</div>
               <div class="step-content">
-                <strong>Akun Belajar CSCP Aktif</strong>
-                <span>Profil dan data formasi Anda telah tersimpan di sistem Al Bisyru.</span>
+                <strong>Buat Akun Portal CSCP</strong>
+                <span>Registrasi bimbingan belajar Yayasan Pendidikan Al Bisyru selesai.</span>
               </div>
             </li>
-            <li class="milestone-step active">
-              <div class="step-marker">2</div>
+            <li class="milestone-step ${tiuHistory.length > 0 ? 'done' : 'active'}">
+              <div class="step-marker">${tiuHistory.length > 0 ? '✓' : '2'}</div>
               <div class="step-content">
-                <strong>Verifikasi Ijazah & Transkrip Nilai</strong>
-                <span>Pastikan hasil scan dokumen asli berformat PDF berukuran maksimal 500–1.000 KB.</span>
+                <strong>Latihan Soal & Mini Try Out</strong>
+                <span>${tiuHistory.length > 0 ? `Telah menyelesaikan ${tiuHistory.length} kali latihan soal.` : 'Kerjakan Paket Tes 1: TIU Baris & Deret (50 Soal).'}</span>
               </div>
             </li>
             <li class="milestone-step">
               <div class="step-marker">3</div>
               <div class="step-content">
-                <strong>Surat Pernyataan & Surat Lamaran</strong>
-                <span>Gunakan format resmi instansi tujuan dan bubuhkan e-Meterai resmi Peruri.</span>
+                <strong>Pelajari 7 Dokumen Wajib</strong>
+                <span>Sesuaikan KTP, Ijazah, Transkrip, Surat Lamaran Kemenag RI, dll.</span>
               </div>
             </li>
             <li class="milestone-step">
               <div class="step-marker">4</div>
               <div class="step-content">
-                <strong>Pasfoto Latar Belakang Merah</strong>
-                <span>Format JPEG/JPG berdimensi tajam dengan ukuran maksimal 200–300 KB.</span>
+                <strong>Ikuti Sesi Pendampingan Zoom</strong>
+                <span>Diskusi materi intensif dan bedah soal bersama mentor Al Bisyru.</span>
               </div>
             </li>
-          </ul>
+          </ol>
 
-          <div class="checklist-action-box">
-            <a href="#persiapan-berkas" class="btn-open-checklist">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 11l3 3L22 4"></path>
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-              </svg>
-              <span>Kelola Checklist Berkas Administrasi</span>
-            </a>
-          </div>
+          <a href="#tryout" class="btn-open-checklist">
+            <span>Buka Latihan Soal Sekarang</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
         </div>
       </div>
     </section>
