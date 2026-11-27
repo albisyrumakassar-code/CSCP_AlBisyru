@@ -13,7 +13,7 @@ export function renderDashboardHeader(userData, activeRoute = "overview") {
   return `
     <header class="dash-header">
       <div class="dash-header-inner">
-        <a href="#overview" class="dash-brand" aria-label="CSCP Dashboard">
+        <a href="#overview" class="dash-brand" aria-label="Dashboard CSCP">
           <span class="dash-brand-mark">C</span>
           <span class="dash-brand-text">
             CSCP
