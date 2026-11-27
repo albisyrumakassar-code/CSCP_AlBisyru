@@ -22,14 +22,14 @@ const SSCASN_SLIDES = [
     step: "Langkah 2",
     badge: "Validasi Awal KTP",
     title: "Mulai Pendaftaran Akun SSCASN dengan Tepat",
-    desc: "1. Buka situs resmi SSCASN (sscasn.bkn.go.id) lalu klik Buat Akun. 2. Isi NIK, No. KK, nama lengkap, tempat/tgl lahir, kota terbit KTP, no HP, dan email. 3. Periksa kesesuaian data dengan Dukcapil.",
+    desc: "1. Buka situs resmi SSCASN (sscasn.bkn.go.id) lalu klik Buat Akun. 2. Isi NIK, No. KK, nama lengkap, tempat/tanggal lahir, kota terbit KTP, nomor HP, dan email. 3. Periksa kesesuaian data dengan Dukcapil.",
     filename: "2_langkah_1_2_3_buka_situs_isi_ktp.jpg"
   },
   {
     step: "Langkah 3",
     badge: "Pengisian Berkas & Akun",
     title: "Lengkapi Data Diri & Keamanan Akun",
-    desc: "Unggah scan KTP asli, isi data ijazah (nama tanpa gelar, tanggal lahir, kota lahir), buat password kombinasi 8-64 karakter (huruf kapital, huruf kecil, angka, simbol), dan pilih 2 pertanyaan pengaman.",
+    desc: "Unggah scan KTP asli, isi data ijazah (nama tanpa gelar, tanggal lahir, kota lahir), buat password kombinasi 8–64 karakter (huruf kapital, huruf kecil, angka, simbol), dan pilih 2 pertanyaan pengaman.",
     filename: "3_langkah_4_lengkapi_data_ktp_ijazah.jpg"
   },
   {
@@ -68,7 +68,7 @@ const FORMASI_DOCUMENTS = [
     title: "Surat Pernyataan Ditandatangani & Bermeterai",
     ruleBadge: "Lampiran Formasi",
     ruleColor: "amber",
-    desc: "Surat Pernyataan yang sudah ditandatangani dan dibubuhi meterai. Format resmi surat pernyataan disediakan sebagai lampiran dan akan muncul bersamaan dengan pengumuman rincian formasi dari instansi.",
+    desc: "Surat pernyataan yang sudah ditandatangani dan dibubuhi meterai. Format resmi surat pernyataan disediakan sebagai lampiran dan akan muncul bersamaan dengan pengumuman rincian formasi dari instansi.",
     format: "PDF",
     maxSize: "Maks. 1.000 KB",
     tip: "Gunakan e-Meterai resmi Peruri atau meterai tempel sesuai petunjuk juknis instansi."
@@ -80,7 +80,7 @@ const FORMASI_DOCUMENTS = [
     ruleColor: "amber",
     desc: "Surat lamaran ditulis tangan dengan tinta hitam atau diketik menggunakan komputer yang ditujukan kepada Menteri Agama Republik Indonesia yang sudah ditandatangani dan dibubuhi meterai. Format surat lamaran resmi disediakan sebagai lampiran saat pengumuman formasi dibuka.",
     format: "PDF",
-    maxSize: "Maks. 500 - 1.000 KB",
+    maxSize: "Maks. 500–1.000 KB",
     tip: "Pastikan tanggal surat sesuai dengan periode pendaftaran dan tujuan surat tertulis tepat."
   },
   {
@@ -88,7 +88,7 @@ const FORMASI_DOCUMENTS = [
     title: "Kartu Tanda Penduduk (KTP) Asli / Surat Keterangan Dukcapil",
     ruleBadge: "Identitas Kependudukan",
     ruleColor: "blue",
-    desc: "Kartu Tanda Penduduk (KTP) asli atau Surat Keterangan asli telah melakukan perekaman kependudukan yang dikeluarkan oleh Dinas Kependudukan dan Pencatatan Sipil (Disdukcapil) yang masih berlaku.",
+    desc: "Kartu Tanda Penduduk (KTP) asli atau surat keterangan asli telah melakukan perekaman kependudukan yang dikeluarkan oleh Dinas Kependudukan dan Pencatatan Sipil (Disdukcapil) yang masih berlaku.",
     format: "JPEG / JPG",
     maxSize: "Maks. 500 KB",
     tip: "Scan berwarna, seluruh tepi KTP terlihat utuh, nomor NIK dan tulisan terbaca jelas tanpa blur."
@@ -100,7 +100,7 @@ const FORMASI_DOCUMENTS = [
     ruleColor: "green",
     desc: "Bukti sertifikat akreditasi perguruan tinggi dan/atau program studi yang terakreditasi pada BAN-PT atau Lembaga Akreditasi Mandiri (LAM), atau bukti izin operasional bagi pelamar yang berasal dari Ma'had Aly sesuai dengan tahun kelulusan.",
     format: "PDF",
-    maxSize: "Maks. 500 - 1.000 KB",
+    maxSize: "Maks. 500–1.000 KB",
     tip: "Dapat berupa tangkapan layar (screenshot) resmi dari pangkalan data PDDIKTI / BAN-PT atau scan sertifikat fisik."
   },
   {
@@ -111,17 +111,17 @@ const FORMASI_DOCUMENTS = [
     desc: "Ijazah asli sesuai dengan ketentuan persyaratan kualifikasi pendidikan formasi yang dilamar. Bagi lulusan luar negeri, wajib menyertakan surat penyetaraan ijazah dari kementerian terkait.",
     format: "PDF",
     maxSize: "Maks. 1.000 KB",
-    tip: "Wajib scan dari fisik Ijazah Asli berwarna, bukan fotokopi legalisir (kecuali juknis menentukan lain)."
+    tip: "Wajib scan dari fisik ijazah asli berwarna, bukan fotokopi legalisasi (kecuali juknis menentukan lain)."
   },
   {
     num: "6",
     title: "Transkrip Nilai Asli",
     ruleBadge: "Prestasi Akademik",
     ruleColor: "blue",
-    desc: "Transkrip Nilai asli lengkap seluruh semester/halaman sesuai dengan ketentuan persyaratan kualifikasi pendidikan.",
+    desc: "Transkrip nilai asli lengkap seluruh semester/halaman sesuai dengan ketentuan persyaratan kualifikasi pendidikan.",
     format: "PDF",
     maxSize: "Maks. 1.000 KB",
-    tip: "Jika transkrip memiliki halaman bolak-balik, gabungkan menjadi satu berkas file PDF utuh yang berurutan."
+    tip: "Jika transkrip memiliki halaman bolak-balik, gabungkan menjadi satu berkas PDF utuh yang berurutan."
   },
   {
     num: "7",
@@ -130,7 +130,7 @@ const FORMASI_DOCUMENTS = [
     ruleColor: "red",
     desc: "Pasfoto terbaru menggunakan pakaian formal (kemeja putih rapi/jas/dasi) dengan latar belakang warna merah menyala.",
     format: "JPEG / JPG",
-    maxSize: "Maks. 200 - 300 KB",
+    maxSize: "Maks. 200–300 KB",
     tip: "Foto studio tegak berdimensi tajam, wajah menghadap lurus ke kamera, bukan hasil foto selfie atau potong dari foto lain."
   }
 ];
@@ -213,7 +213,7 @@ export function renderBerkasPage(userData) {
             <span class="feature-kicker">PANDUAN INFORMASI RESMI</span>
             <h1 class="feature-title">Persiapan Berkas Seleksi CASN</h1>
             <p class="feature-desc">
-              Pusat informasi dan checklist dokumen yang wajib Anda siapkan dalam proses seleksi Calon Aparatur Sipil Negara, terbagi menjadi 2 tahapan utama: saat pembuatan akun portal SSCASN dan saat pendaftaran formasi instansi.
+              Pusat informasi dan checklist dokumen yang wajib Anda siapkan dalam proses seleksi Calon Aparatur Sipil Negara, terbagi menjadi dua tahapan utama: saat pembuatan akun portal SSCASN dan saat pendaftaran formasi instansi.
             </p>
           </div>
         </div>
@@ -232,7 +232,7 @@ export function renderBerkasPage(userData) {
         <!-- Navigasi Lompat Antar-Klasifikasi -->
         <div class="berkas-tabs-nav" style="margin-top: 24px;">
           <a href="#sscasn-section" class="berkas-tab-btn active" onclick="document.getElementById('sec-sscasn').scrollIntoView({behavior:'smooth'}); return false;">
-            <span>1. Berkas & Informasi Buat Akun SSCASN</span>
+            <span>1. Berkas dan Informasi Pembuatan Akun SSCASN</span>
           </a>
           <a href="#formasi-section" class="berkas-tab-btn" onclick="document.getElementById('sec-formasi').scrollIntoView({behavior:'smooth'}); return false;">
             <span>2. Berkas Unggahan Setelah Daftar Formasi</span>
@@ -249,7 +249,7 @@ export function renderBerkasPage(userData) {
       <section class="berkas-section-box" id="sec-sscasn">
         <div class="berkas-section-header">
           <span class="berkas-section-kicker">KLASIFIKASI TAHAP 1</span>
-          <h2 class="berkas-section-title">1. Berkas & Informasi Saat Buat Akun SSCASN</h2>
+          <h2 class="berkas-section-title">1. Berkas dan Informasi Pembuatan Akun SSCASN</h2>
           <p class="berkas-section-desc">
             Ikuti alur panduan pembuatan akun SSCASN resmi berikut ini secara berurutan sesuai infografis panduan. Klik pada gambar untuk memperbesar tampilan infografis.
           </p>
@@ -267,7 +267,7 @@ export function renderBerkasPage(userData) {
       <section class="berkas-section-box" id="sec-formasi">
         <div class="berkas-section-header">
           <span class="berkas-section-kicker">KLASIFIKASI TAHAP 2</span>
-          <h2 class="berkas-section-title">2. Berkas yang Diupload Setelah Daftar Formasi</h2>
+          <h2 class="berkas-section-title">2. Berkas yang Diunggah Setelah Daftar Formasi</h2>
           <p class="berkas-section-desc">
             Setelah berhasil memilih formasi jabatan yang dituju di portal SSCASN, siapkan dan unggah 7 berkas persyaratan resmi berikut ini:
           </p>
