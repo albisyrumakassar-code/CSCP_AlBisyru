@@ -23,7 +23,7 @@ const state = {
   accounts: [],
   categories: [
     { code: "TWK", name: "Tes Wawasan Kebangsaan" },
-    { code: "TIU", name: "Tes Intelegensia Umum" },
+    { code: "TIU", name: "Tes Inteligensi Umum" },
     { code: "TKP", name: "Tes Karakteristik Pribadi" }
   ],
   questions: [],
@@ -534,7 +534,7 @@ function renderAccountsTab() {
       <div class="admin-panel-header">
         <div>
           <h2>Daftar Seluruh Akun Terdaftar (${filtered.length})</h2>
-          <p class="admin-panel-sub">Pantau identitas pendaftar, kontak WhatsApp/Email, target formasi, serta progres try out & berkas.</p>
+          <p class="admin-panel-sub">Pantau identitas pendaftar, kontak WhatsApp/email, target formasi, serta progres try out & berkas.</p>
         </div>
         <button type="button" class="btn-admin-primary" id="exportAccountsCsvBtn">⬇ Ekspor CSV</button>
       </div>
@@ -587,7 +587,7 @@ function renderAccountsTab() {
                     </td>
                     <td><span class="admin-pill pill-blue">${escapeHtml(acc.target_formation || "Belum dipilih")}</span></td>
                     <td>
-                      <span class="admin-cell-primary">Try Out: ${acc.tryout_count || 0}x ${acc.best_score !== null && acc.best_score !== undefined ? `(Best: ${acc.best_score})` : ""}</span>
+                      <span class="admin-cell-primary">Try Out: ${acc.tryout_count || 0}x ${acc.best_score !== null && acc.best_score !== undefined ? `(Terbaik: ${acc.best_score})` : ""}</span>
                       <span class="admin-cell-sub">Berkas selesai: ${acc.checklist_done_count || 0}</span>
                     </td>
                     <td>
@@ -731,7 +731,7 @@ function renderResultsTab() {
           <div class="admin-kpi-value">${filtered.length}</div>
         </div>
         <div class="admin-kpi-card">
-          <div class="admin-kpi-top"><span class="admin-kpi-label">Rata-rata Skor</span><span class="admin-kpi-icon">📈</span></div>
+          <div class="admin-kpi-top"><span class="admin-kpi-label">Rata-Rata Skor</span><span class="admin-kpi-icon">📈</span></div>
           <div class="admin-kpi-value">${avg}</div>
         </div>
         <div class="admin-kpi-card">
@@ -788,7 +788,7 @@ function renderResultsTab() {
                       <td><span class="admin-pill ${st.cls}">${st.text}</span></td>
                       <td>
                         <span class="admin-cell-primary">${formatDate(res.started_at)}</span>
-                        <span class="admin-cell-sub">Submit: ${formatDate(res.submitted_at)}</span>
+                        <span class="admin-cell-sub">Selesai: ${formatDate(res.submitted_at)}</span>
                       </td>
                       <td>${res.answered_count ?? 0} soal</td>
                       <td><strong style="font-size:15px; color: var(--navy-primary);">${res.total_score ?? "-"}</strong></td>
@@ -1147,7 +1147,7 @@ function attachContentEvents() {
         if (!resp.ok) throw new Error("File admin_setup.sql tidak ditemukan");
         const sqlText = await resp.text();
         await navigator.clipboard.writeText(sqlText);
-        showToast("Skrip admin_setup.sql berhasil disalin! Paste di Supabase SQL Editor.");
+        showToast("Skrip admin_setup.sql berhasil disalin! Tempel di Supabase SQL Editor.");
       } catch (err) {
         alert(`Gagal menyalin otomatis. Silakan buka file admin_setup.sql di folder proyek.\n(${err.message})`);
       }
