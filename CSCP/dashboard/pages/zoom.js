@@ -92,7 +92,7 @@ export function renderZoomPage(userData) {
               <span>Masuk Ruang Zoom Sekarang →</span>
             </a>
 
-            <button type="button" class="btn-zoom-copy" id="btnCopyZoomLink" onclick="navigator.clipboard.writeText('${ZOOM_LINK}').then(() => { this.innerHTML = '✓ Link Zoom Tersalin!'; setTimeout(() => { this.innerHTML = '📋 Salin Tautan Zoom'; }, 2500); })">
+            <button type="button" class="btn-zoom-copy" id="btnCopyZoomLink" onclick="navigator.clipboard.writeText('${ZOOM_LINK}').then(() => { this.innerHTML = '✓ Tautan Zoom Tersalin!'; setTimeout(() => { this.innerHTML = '📋 Salin Tautan Zoom'; }, 2500); })">
               <span>📋 Salin Tautan Zoom</span>
             </button>
           </div>
@@ -122,7 +122,7 @@ export function renderZoomPage(userData) {
               <span>Buka Rekaman Kelas Zoom →</span>
             </a>
 
-            <button type="button" class="btn-zoom-copy" id="btnCopyRecordingLink" onclick="navigator.clipboard.writeText('${ZOOM_RECORDING_LINK}').then(() => { this.innerHTML = '✓ Link Rekaman Tersalin!'; setTimeout(() => { this.innerHTML = '📋 Salin Tautan Rekaman'; }, 2500); })">
+            <button type="button" class="btn-zoom-copy" id="btnCopyRecordingLink" onclick="navigator.clipboard.writeText('${ZOOM_RECORDING_LINK}').then(() => { this.innerHTML = '✓ Tautan Rekaman Tersalin!'; setTimeout(() => { this.innerHTML = '📋 Salin Tautan Rekaman'; }, 2500); })">
               <span>📋 Salin Tautan Rekaman</span>
             </button>
           </div>
