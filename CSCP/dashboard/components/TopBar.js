@@ -34,7 +34,7 @@ export function renderTopBar(userData, activeRoute = "overview") {
 
         <!-- Breadcrumb Tracker -->
         <div class="topbar-breadcrumb">
-          <span class="breadcrumb-root">CSCP Portal</span>
+          <span class="breadcrumb-root">Portal CSCP</span>
           <span class="breadcrumb-slash">/</span>
           <span class="breadcrumb-active">${currentLabel}</span>
         </div>
