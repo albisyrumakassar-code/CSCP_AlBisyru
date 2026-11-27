@@ -10,7 +10,7 @@ export const PRACTICE_TAXONOMY = {
     name: "TIU (Tes Intelegensia Umum)",
     shortName: "TIU",
     passingGrade: 80,
-    maxScore: 250,
+    maxScore: 175,
     scorePerCorrect: 5,
     description: "Mengukur penguasaan logika numerik, verbal, dan penalaran figural sesuai standar BKN.",
     groups: [
@@ -22,10 +22,10 @@ export const PRACTICE_TAXONOMY = {
           {
             id: "baris-deret",
             title: "Baris & Deret",
-            badge: "Tersedia 50 Soal",
+            badge: "Tersedia 3 Paket (45 Soal)",
             isAvailable: true,
-            totalPackages: 1,
-            description: "Pola deret angka, huruf, bertingkat, berselang, dan barisan Fibonacci."
+            totalPackages: 3,
+            description: "Pola deret angka, huruf, bertingkat, berselang, dan barisan Fibonacci (dibagi 3 paket @15 soal)."
           },
           {
             id: "aritmatika-aljabar",
@@ -160,27 +160,31 @@ export const PRACTICE_TAXONOMY = {
 
 /**
  * Daftar Paket Soal Latihan CSCP
- * Mudah ditambah di kemudian hari hanya dengan menambahkan objek paket baru ke array ini.
+ * TIU Baris & Deret dibagi menjadi 3 Paket (@15 soal, total 45 soal)
+ * Setiap paket dapat dikerjakan secara mandiri dengan durasi 45 menit.
  */
 export const PRACTICE_PACKAGES = [
+  // ==========================================
+  // PAKET 1: SOAL NOMOR 1 - 15
+  // ==========================================
   {
-    id: "tiu-baris-deret-1",
+    id: "tiu-baris-deret-paket-1",
     panel: "TIU",
     subcategoryId: "baris-deret",
     subcategoryTitle: "Baris & Deret",
     code: "TIU-BD-01",
-    title: "Paket Tes 1: Soal TIU Baris & Deret",
-    sourceInfo: "Modul Resmi Paket Tes 1 — Soal TIU Baris & Deret (Halaman 36-44)",
+    title: "Paket 1: Soal TIU Baris & Deret (No. 1–15)",
+    sourceInfo: "Modul Resmi Paket Tes 1 — Soal Nomor 1–15",
     durationMinutes: 45,
     durationSeconds: 45 * 60,
-    totalQuestions: 50,
-    passingGrade: 80,
+    totalQuestions: 15,
+    passingGrade: 50,
     scorePerCorrect: 5,
     scorePerWrong: 0,
     scorePerUnanswered: 0,
-    maxScore: 250,
-    difficulty: "Menengah (Standard CAT BKN)",
-    description: "50 butir soal latihan variasi barisan angka dan huruf lengkap dengan pembahasan mendalam serta trik pola cepat.",
+    maxScore: 75,
+    difficulty: "Standar CAT BKN",
+    description: "15 butir soal latihan variasi deret angka & huruf (Nomor 1–15) lengkap dengan timer 45 menit dan pembahasan mendalam.",
     questions: [
       {
         id: 1,
@@ -286,7 +290,32 @@ export const PRACTICE_PACKAGES = [
         options: { A: "1, 11, dan 15", B: "1, 15, dan 16", C: "11, 15, dan 3", D: "11, 2, dan 15", E: "15, 11, dan 1" },
         correct: "C",
         explanation: "Pola 3 larik berselang 3 langkah:\n• Larik 1: 1 (+2) 3 (+2) 5 (+2) 7 (+2) 9 (+2) 11\n• Larik 2: 0 (+3) 3 (+3) 6 (+3) 9 (+3) 12 (+3) 15\n• Larik 3: 8 (-1) 7 (-1) 6 (-1) 5 (-1) 4 (-1) 3\nJadi, tiga bilangan berikutnya berturut-turut adalah 11, 15, dan 3 (Pilihan C)."
-      },
+      }
+    ]
+  },
+
+  // ==========================================
+  // PAKET 2: SOAL NOMOR 16 - 30
+  // ==========================================
+  {
+    id: "tiu-baris-deret-paket-2",
+    panel: "TIU",
+    subcategoryId: "baris-deret",
+    subcategoryTitle: "Baris & Deret",
+    code: "TIU-BD-02",
+    title: "Paket 2: Soal TIU Baris & Deret (No. 16–30)",
+    sourceInfo: "Modul Resmi Paket Tes 1 — Soal Nomor 16–30",
+    durationMinutes: 45,
+    durationSeconds: 45 * 60,
+    totalQuestions: 15,
+    passingGrade: 50,
+    scorePerCorrect: 5,
+    scorePerWrong: 0,
+    scorePerUnanswered: 0,
+    maxScore: 75,
+    difficulty: "Standar CAT BKN",
+    description: "15 butir soal lanjutan variasi deret angka & huruf (Nomor 16–30) lengkap dengan timer 45 menit dan pembahasan mendalam.",
+    questions: [
       {
         id: 16,
         question: "..., ..., 41, 33, 26, 20, 15, 11",
@@ -391,7 +420,32 @@ export const PRACTICE_PACKAGES = [
         options: { A: "6-8-5", B: "8-5-8", C: "6-8-6", D: "5-8-5", E: "6-8-5" },
         correct: "B",
         explanation: "Pola 2 larik berselang:\n• Larik ganjil: 8, 8, 8, 8, (8), (8) -> bernilai konstan 8\n• Larik genap: 7, 7, 6, 6, (5), (5) -> berpasangan berkurang 1\nMaka, 3 bilangan berikutnya adalah 8 - 5 - 8 (Pilihan B)."
-      },
+      }
+    ]
+  },
+
+  // ==========================================
+  // PAKET 3: SOAL NOMOR 31 - 45
+  // ==========================================
+  {
+    id: "tiu-baris-deret-paket-3",
+    panel: "TIU",
+    subcategoryId: "baris-deret",
+    subcategoryTitle: "Baris & Deret",
+    code: "TIU-BD-03",
+    title: "Paket 3: Soal TIU Baris & Deret (No. 31–45)",
+    sourceInfo: "Modul Resmi Paket Tes 1 — Soal Nomor 31–45",
+    durationMinutes: 45,
+    durationSeconds: 45 * 60,
+    totalQuestions: 15,
+    passingGrade: 50,
+    scorePerCorrect: 5,
+    scorePerWrong: 0,
+    scorePerUnanswered: 0,
+    maxScore: 75,
+    difficulty: "Standar CAT BKN",
+    description: "15 butir soal lanjutan variasi deret angka & huruf (Nomor 31–45) lengkap dengan timer 45 menit dan pembahasan mendalam.",
+    questions: [
       {
         id: 31,
         question: "Suatu seri: 13-8-16-5-19-2-22- seri selanjutnya:",
@@ -496,41 +550,6 @@ export const PRACTICE_PACKAGES = [
         options: { A: "68", B: "51", C: "42", D: "21", E: "17" },
         correct: "E",
         explanation: "Pola pembagian bilangan bertingkat (:1, :2, :3, :4, :5):\n• 2040 : 1 = 2040\n• 2040 : 2 = 1020\n• 1020 : 3 = 340\n• 340 : 4 = 85\n• 85 : 5 = 17\nJadi, bilangan selanjutnya adalah 17 (Pilihan E)."
-      },
-      {
-        id: 46,
-        question: "3, 8, 6, 12, 11, ..., ...",
-        options: { A: "18 dan 18", B: "17 dan 21", C: "17 dan 15", D: "16 dan 22", E: "16 dan 18" },
-        correct: "A",
-        explanation: "Pola selang-seling operasi:\n• 3 (+5) 8 (-2) 6 (+6) 12 (-1) 11 (+7) 18 (-0) 18.\n• X = 11 + 7 = 18\n• Y = 18 - 0 = 18\nJadi, dua bilangan selanjutnya adalah 18 dan 18 (Pilihan A)."
-      },
-      {
-        id: 47,
-        question: "2, 3, 6, 7, 14, 15, ..., ...",
-        options: { A: "22 dan 32", B: "23 dan 32", C: "30 dan 31", D: "30 dan 32", E: "33 dan 30" },
-        correct: "C",
-        explanation: "Pola bergantian operasi (+1) dan (x2):\n• 2 (+1) 3 (x2) 6 (+1) 7 (x2) 14 (+1) 15 (x2) 30 (+1) 31.\n• X = 15 x 2 = 30\n• Y = 30 + 1 = 31\nJadi, dua bilangan selanjutnya adalah 30 dan 31 (Pilihan C)."
-      },
-      {
-        id: 48,
-        question: "10, 12, 24, 26, 52, 54, 108, ...",
-        options: { A: "112", B: "216", C: "110", D: "124", E: "214" },
-        correct: "C",
-        explanation: "Pola bergantian operasi (+2) dan (x2):\n• 10 (+2) 12 (x2) 24 (+2) 26 (x2) 52 (+2) 54 (x2) 108 (+2) 110.\nJadi, bilangan selanjutnya adalah 108 + 2 = 110 (Pilihan C)."
-      },
-      {
-        id: 49,
-        question: "Suatu deret 3-5-8-12- deret selanjutnya:",
-        options: { A: "15", B: "16", C: "17", D: "18", E: "19" },
-        correct: "C",
-        explanation: "Pola pertambahan selisih bertingkat (+2, +3, +4, +5):\n• 3 (+2) 5 (+3) 8 (+4) 12 (+5) 17.\nJadi, bilangan selanjutnya adalah 12 + 5 = 17 (Pilihan C)."
-      },
-      {
-        id: 50,
-        question: "Suatu deret 3, -1, 6, 2, 9, 5, 12, X deret selanjutnya:",
-        options: { A: "5", B: "6", C: "8", D: "9", E: "12" },
-        correct: "C",
-        explanation: "Pola 2 larik berselang dengan penambahan 3 (+3):\n• Larik ganjil: 3 (+3) 6 (+3) 9 (+3) 12\n• Larik genap: -1 (+3) 2 (+3) 5 (+3) 8\nAtau pola selang-seling (-4, +7):\n• 12 - 4 = 8.\nJadi, nilai X deret selanjutnya adalah 8 (Pilihan C)."
       }
     ]
   }
@@ -577,8 +596,8 @@ export function saveUserAttempt(userId, attemptData) {
       ...attemptData
     };
     currentList.unshift(newAttempt);
-    // Simpan maksimal 50 riwayat latihan terakhir
-    const trimmed = currentList.slice(0, 50);
+    // Simpan maksimal 60 riwayat latihan terakhir
+    const trimmed = currentList.slice(0, 60);
     localStorage.setItem(`${STORAGE_PREFIX}${userId}`, JSON.stringify(trimmed));
     return newAttempt;
   } catch (e) {
@@ -588,6 +607,10 @@ export function saveUserAttempt(userId, attemptData) {
 }
 
 export function getPackageById(packageId) {
+  if (packageId === "tiu-baris-deret-1") {
+    // Backward compatibility untuk percobaan terdahulu
+    return PRACTICE_PACKAGES[0];
+  }
   return PRACTICE_PACKAGES.find(p => p.id === packageId) || null;
 }
 
