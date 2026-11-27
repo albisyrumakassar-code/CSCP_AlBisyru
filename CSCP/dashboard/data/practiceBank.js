@@ -161,7 +161,7 @@ export const PRACTICE_TAXONOMY = {
 /**
  * Daftar Paket Soal Latihan CSCP
  * TIU Baris & Deret dibagi menjadi 3 Paket (@15 soal, total 45 soal)
- * Setiap paket dapat dikerjakan secara mandiri dengan durasi 45 menit.
+ * Setiap paket dapat dikerjakan secara mandiri dengan durasi 14 menit.
  */
 export const PRACTICE_PACKAGES = [
   // ==========================================
@@ -175,8 +175,8 @@ export const PRACTICE_PACKAGES = [
     code: "TIU-BD-01",
     title: "Paket 1: Soal TIU Baris & Deret (No. 1–15)",
     sourceInfo: "Modul Resmi Paket Tes 1 — Soal Nomor 1–15",
-    durationMinutes: 45,
-    durationSeconds: 45 * 60,
+    durationMinutes: 14,
+    durationSeconds: 14 * 60,
     totalQuestions: 15,
     passingGrade: 50,
     scorePerCorrect: 5,
@@ -184,7 +184,7 @@ export const PRACTICE_PACKAGES = [
     scorePerUnanswered: 0,
     maxScore: 75,
     difficulty: "Standar CAT BKN",
-    description: "15 butir soal latihan variasi deret angka & huruf (Nomor 1–15) lengkap dengan timer 45 menit dan pembahasan mendalam.",
+    description: "15 butir soal latihan variasi deret angka & huruf (Nomor 1–15) lengkap dengan timer 14 menit dan pembahasan mendalam.",
     questions: [
       {
         id: 1,
@@ -305,8 +305,8 @@ export const PRACTICE_PACKAGES = [
     code: "TIU-BD-02",
     title: "Paket 2: Soal TIU Baris & Deret (No. 16–30)",
     sourceInfo: "Modul Resmi Paket Tes 1 — Soal Nomor 16–30",
-    durationMinutes: 45,
-    durationSeconds: 45 * 60,
+    durationMinutes: 14,
+    durationSeconds: 14 * 60,
     totalQuestions: 15,
     passingGrade: 50,
     scorePerCorrect: 5,
@@ -314,7 +314,7 @@ export const PRACTICE_PACKAGES = [
     scorePerUnanswered: 0,
     maxScore: 75,
     difficulty: "Standar CAT BKN",
-    description: "15 butir soal lanjutan variasi deret angka & huruf (Nomor 16–30) lengkap dengan timer 45 menit dan pembahasan mendalam.",
+    description: "15 butir soal lanjutan variasi deret angka & huruf (Nomor 16–30) lengkap dengan timer 14 menit dan pembahasan mendalam.",
     questions: [
       {
         id: 16,
@@ -435,8 +435,8 @@ export const PRACTICE_PACKAGES = [
     code: "TIU-BD-03",
     title: "Paket 3: Soal TIU Baris & Deret (No. 31–45)",
     sourceInfo: "Modul Resmi Paket Tes 1 — Soal Nomor 31–45",
-    durationMinutes: 45,
-    durationSeconds: 45 * 60,
+    durationMinutes: 14,
+    durationSeconds: 14 * 60,
     totalQuestions: 15,
     passingGrade: 50,
     scorePerCorrect: 5,
@@ -444,7 +444,7 @@ export const PRACTICE_PACKAGES = [
     scorePerUnanswered: 0,
     maxScore: 75,
     difficulty: "Standar CAT BKN",
-    description: "15 butir soal lanjutan variasi deret angka & huruf (Nomor 31–45) lengkap dengan timer 45 menit dan pembahasan mendalam.",
+    description: "15 butir soal lanjutan variasi deret angka & huruf (Nomor 31–45) lengkap dengan timer 14 menit dan pembahasan mendalam.",
     questions: [
       {
         id: 31,
