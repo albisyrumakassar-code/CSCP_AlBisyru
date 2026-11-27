@@ -17,7 +17,7 @@ export function renderProgressOverview(userData) {
             <span class="badge-tag-skd">SKD CASN</span>
           </div>
           <p class="card-subtext">
-            Kuasai ketiga pilar materi ujian Seleksi Kompetensi Dasar untuk mengamankan posisi perangkingan formasi.
+            Kuasai ketiga pilar materi ujian Seleksi Kompetensi Dasar untuk mengamankan posisi pemeringkatan formasi.
           </p>
 
           <div class="readiness-bars-list">
@@ -61,7 +61,7 @@ export function renderProgressOverview(userData) {
                 <div class="bar-fill tkp-fill" style="width: 74%;"></div>
               </div>
               <div class="bar-footer">
-                <small>45 Soal · Pelayanan Publik, Jejaring Kerja, Sosial Budaya, Anti Radikalisme</small>
+                <small>45 Soal · Pelayanan Publik, Jejaring Kerja, Sosial Budaya, Antiradikalisme</small>
                 <span class="bar-status-text">Prioritas Skor</span>
               </div>
             </div>
@@ -78,7 +78,7 @@ export function renderProgressOverview(userData) {
             <a href="#persiapan-berkas" class="card-link-action">Lihat Semua →</a>
           </div>
           <p class="card-subtext">
-            Pastikan setiap dokumen administrasi disiapkan dengan ukuran dan format yang sesuai ketentuan instansi.
+            Pastikan setiap dokumen administrasi disiapkan dengan ukuran dan format yang sesuai dengan ketentuan instansi.
           </p>
 
           <ul class="milestone-steps-list">
@@ -93,7 +93,7 @@ export function renderProgressOverview(userData) {
               <div class="step-marker">2</div>
               <div class="step-content">
                 <strong>Verifikasi Ijazah & Transkrip Nilai</strong>
-                <span>Pastikan hasil scan dokumen asli berformat PDF berukuran maksimal 500-1000 KB.</span>
+                <span>Pastikan hasil scan dokumen asli berformat PDF berukuran maksimal 500–1.000 KB.</span>
               </div>
             </li>
             <li class="milestone-step">
@@ -106,8 +106,8 @@ export function renderProgressOverview(userData) {
             <li class="milestone-step">
               <div class="step-marker">4</div>
               <div class="step-content">
-                <strong>Pas Foto Latar Belakang Merah</strong>
-                <span>Format JPEG/JPG berdimensi tajam dengan ukuran maksimal 200-300 KB.</span>
+                <strong>Pasfoto Latar Belakang Merah</strong>
+                <span>Format JPEG/JPG berdimensi tajam dengan ukuran maksimal 200–300 KB.</span>
               </div>
             </li>
           </ul>
