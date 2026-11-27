@@ -9,13 +9,14 @@ import { getOverallUserStats, getUserId, getUserHistory } from "../data/practice
 export function renderProgressOverview(userData) {
   const userId = getUserId(userData);
   const stats = getOverallUserStats(userId);
-  const tiuHistory = getUserHistory(userId, "tiu-baris-deret-1");
+  const allHistory = getUserHistory(userId);
+  const tiuHistory = allHistory.filter(h => h.panel === "TIU" || (h.packageId && h.packageId.startsWith("tiu-")));
   const latestTiu = tiuHistory[0] || null;
   const highestTiuScore = tiuHistory.length ? Math.max(...tiuHistory.map(h => h.score || 0)) : null;
 
-  const tiuPercent = highestTiuScore ? Math.min(100, Math.round((highestTiuScore / 250) * 100)) : 45;
+  const tiuPercent = highestTiuScore ? Math.min(100, Math.round((highestTiuScore / 75) * 100)) : 45;
   const tiuStatus = highestTiuScore !== null 
-    ? (highestTiuScore >= 80 ? `Lulus PG (${highestTiuScore} Poin)` : `Belum PG (${highestTiuScore} Poin)`)
+    ? (highestTiuScore >= 50 ? `Lulus PG (${highestTiuScore} Poin)` : `Belum PG (${highestTiuScore} Poin)`)
     : "Siap Evaluasi";
 
   return `
