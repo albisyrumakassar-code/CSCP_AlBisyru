@@ -52,7 +52,7 @@ export function renderMonitoringPage(userData) {
           <div class="preview-item">
             <div class="preview-item-icon">📑</div>
             <h4>Laporan Riwayat Jawaban</h4>
-            <p>Arsip rekapan seluruh try out yang pernah dikerjakan untuk evaluasi mandiri kapan pun.</p>
+            <p>Arsip rekapitulasi seluruh try out yang pernah dikerjakan untuk evaluasi mandiri kapan pun.</p>
           </div>
         </div>
 
